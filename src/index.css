@@ -1,0 +1,61 @@
+@import 'bootstrap/dist/css/bootstrap.min.css';
+@import 'bootstrap-icons/font/bootstrap-icons.css';
+@import './assets/styling/theme.css';
+
+/* Global utilities or specific overrides can go here */
+.page-header {
+  padding: 6rem 0 3rem 0;
+  background: linear-gradient(to bottom, var(--luxury-navy-deep), var(--luxury-navy));
+  border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+  text-align: center;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.text-justify {
+  text-align: justify;
+}
+
+/* ─── Force ALL small section labels / sub-titles to WHITE ─── */
+/* Overrides any text-white-50 applied to section labels and sub-headings */
+.page-header .text-white-50,
+section .text-white-50.text-uppercase,
+.section-label,
+.label-white {
+  color: #FFFFFF !important;
+  opacity: 1 !important;
+}
+
+/* Form labels inside luxury-card always white */
+.luxury-card .form-label {
+  color: #FFFFFF !important;
+  opacity: 1 !important;
+}
+
+/* Contact info detail text remains softer */
+.contact-detail-text {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* ─── Service Card Styling ─── */
+/* Card titles → GOLD */
+.luxury-card .card-title {
+  color: var(--luxury-gold) !important;
+}
+
+/* Card description paragraphs → WHITE */
+.luxury-card .card-text {
+  color: #FFFFFF !important;
+}
+
+/* Featured Services h2 heading → WHITE */
+.featured-services-heading {
+  color: #FFFFFF !important;
+}
+
+/* OUR SPECIALITIES sub-label → WHITE */
+.services-sub-label {
+  color: #FFFFFF !important;
+}
