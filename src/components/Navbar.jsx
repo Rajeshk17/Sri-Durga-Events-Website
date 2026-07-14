@@ -1,68 +1,104 @@
-import React from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import React from "react";
+import { Link, NavLink } from "react-router-dom";
+import logo from "../assets/logo.jpeg";
 
 const Navbar = () => {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark luxury-navbar fixed-top py-3">
       <div className="container">
-        {/* Brand/Logo - Sri Durga Events */}
+
+        {/* Brand */}
         <Link className="navbar-brand d-flex align-items-center" to="/">
-          <span className="fs-3 fw-bold text-gold" style={{ fontFamily: "'Playfair Display', serif", letterSpacing: '2px' }}>
-            SRI DURGA
-          </span>
-          <span className="ms-2 fs-6 text-uppercase text-white tracking-widest d-none d-sm-inline" style={{ fontSize: '0.75rem', letterSpacing: '3px' }}>
-            Events
-          </span>
+          <img
+            src={logo}
+            alt="Sri Durga Events Logo"
+            style={{
+              width: "50px",
+              height: "50px",
+              objectFit: "contain",
+              marginRight: "14px"
+            }}
+          />
+
+          <div className="d-flex flex-column">
+            <span
+              className="fw-bold text-gold"
+              style={{
+                fontFamily: "'Playfair Display', serif",
+                fontSize: "2rem",
+                letterSpacing: "2px",
+                lineHeight: "1"
+              }}
+            >
+              SRI DURGA
+            </span>
+
+            <span
+              style={{
+                color: "#ffffff",
+                letterSpacing: "5px",
+                fontSize: "13px",
+                textTransform: "uppercase"
+              }}
+            >
+              EVENTS
+            </span>
+          </div>
         </Link>
 
-        {/* Hamburger Toggle */}
+        {/* Mobile Toggle */}
         <button
-          className="navbar-toggler border-0"
+          className="navbar-toggler"
           type="button"
           data-bs-toggle="collapse"
-          data-bs-target="#luxuryNavbar"
-          aria-controls="luxuryNavbar"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
+          data-bs-target="#navbarNav"
         >
           <span className="navbar-toggler-icon"></span>
         </button>
 
-        {/* Nav Links */}
-        <div className="collapse navbar-collapse" id="luxuryNavbar">
-          <ul className="navbar-nav mx-auto mb-2 mb-lg-0">
+        {/* Menu */}
+        <div className="collapse navbar-collapse" id="navbarNav">
+          <ul className="navbar-nav ms-auto">
+
             <li className="nav-item">
-              <NavLink className={({ isActive }) => `nav-link luxury-nav-link ${isActive ? 'active' : ''}`} to="/">
+              <NavLink className="nav-link luxury-nav-link" to="/">
                 Home
               </NavLink>
             </li>
+
             <li className="nav-item">
-              <NavLink className={({ isActive }) => `nav-link luxury-nav-link ${isActive ? 'active' : ''}`} to="/about">
+              <NavLink className="nav-link luxury-nav-link" to="/about">
                 About
               </NavLink>
             </li>
+
             <li className="nav-item">
-              <NavLink className={({ isActive }) => `nav-link luxury-nav-link ${isActive ? 'active' : ''}`} to="/services">
+              <NavLink className="nav-link luxury-nav-link" to="/services">
                 Services
               </NavLink>
             </li>
+
             <li className="nav-item">
-              <NavLink className={({ isActive }) => `nav-link luxury-nav-link ${isActive ? 'active' : ''}`} to="/gallery">
+              <NavLink className="nav-link luxury-nav-link" to="/gallery">
                 Gallery
               </NavLink>
             </li>
+
             <li className="nav-item">
-              <NavLink className={({ isActive }) => `nav-link luxury-nav-link ${isActive ? 'active' : ''}`} to="/packages">
+              <NavLink className="nav-link luxury-nav-link" to="/packages">
                 Packages
               </NavLink>
             </li>
+
             <li className="nav-item">
-              <NavLink className={({ isActive }) => `nav-link luxury-nav-link ${isActive ? 'active' : ''}`} to="/contact">
+              <NavLink className="nav-link luxury-nav-link" to="/contact">
                 Contact
               </NavLink>
             </li>
+
           </ul>
         </div>
+
       </div>
     </nav>
   );
