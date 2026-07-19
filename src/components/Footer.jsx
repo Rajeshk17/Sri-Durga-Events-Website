@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
+import logo from '../assets/images/logo.png';
 
 /* ── fires once when the footer row enters the viewport ── */
 function useFooterAnimation(ref) {
@@ -55,6 +56,13 @@ const Footer = () => {
     }
   ];
 
+  /* Social icon data for the branding column */
+  const socialIcons = [
+    { href: 'https://wa.me/917358951381', icon: 'bi-whatsapp', color: '#25D366', label: 'WhatsApp' },
+    { href: 'https://instagram.com/sridurga_events2', icon: 'bi-instagram', color: '#E1306C', label: 'Instagram' },
+    { href: 'mailto:sridurgaevents@gmail.com', icon: 'bi-envelope-fill', color: '#FFFFFF', label: 'Email' }
+  ];
+
   return (
     <footer
       className="bg-luxury-navy-deep border-top border-gold py-5 mt-auto"
@@ -62,38 +70,67 @@ const Footer = () => {
     >
       <div className="container py-4">
 
-        {/* ── Animated columns ── */}
-        <div className="row g-4" ref={rowRef}>
+        {/* ── Main 4-column row ── */}
+        <div className="row g-4 align-items-stretch" ref={rowRef}>
 
-          {/* Brand — slides in from LEFT */}
+          {/* Brand Column */}
           <div
             className="col-lg-4 col-md-6 footer-col footer-col-left"
             data-anim="animate-left"
           >
-            <h4 className="text-gold mb-3" style={{ fontFamily: "'Playfair Display', serif", letterSpacing: '2px' }}>
-              SRI DURGA EVENTS
-            </h4>
-            <p className="text-white pe-lg-4" style={{ fontSize: '0.9rem', lineHeight: '1.6' }}>
-              Creating exquisite experiences and unforgettably luxurious events. Managed by Mariyappan, our detail-oriented execution turns dreams into legendary moments.
-            </p>
-            {/* Social icons */}
-            <div className="d-flex gap-3 mt-3">
-              <a href="https://wa.me/917358951381" target="_blank" rel="noopener noreferrer"
-                className="text-white fs-5 hover-scale" title="WhatsApp Chat">
-                <i className="bi bi-whatsapp" style={{ color: '#25D366' }}></i>
-              </a>
-              <a href="https://instagram.com/sridurgaevents" target="_blank" rel="noopener noreferrer"
-                className="text-white fs-5 hover-scale" title="Instagram Profile">
-                <i className="bi bi-instagram" style={{ color: '#E1306C' }}></i>
-              </a>
-              <a href="mailto:sridurgaevents@gmail.com"
-                className="text-white fs-5 hover-scale" title="Send Email">
-                <i className="bi bi-envelope-fill text-white"></i>
-              </a>
+            <div className="d-flex flex-column align-items-center text-center h-100">
+              {/* Logo */}
+              <img
+                src={logo}
+                alt="Sri Durga Logo"
+                style={{
+                  height: '75px',
+                  width: '75px',
+                  objectFit: 'contain',
+                  marginBottom: '6px'
+                }}
+              />
+
+              {/* Stacked Brand Name */}
+              <div style={{ lineHeight: 1.15, marginBottom: '12px' }}>
+                <span
+                  className="d-block fw-bold text-gold"
+                  style={{
+                    fontFamily: "'Playfair Display', serif",
+                    fontSize: '1.5rem',
+                    letterSpacing: '2.5px'
+                  }}
+                >
+                  SRI DURGA
+                </span>
+                <span
+                  className="d-block text-uppercase text-white fw-semibold"
+                  style={{
+                    fontFamily: "'Montserrat', sans-serif",
+                    fontSize: '0.7rem',
+                    letterSpacing: '6px'
+                  }}
+                >
+                  EVENTS
+                </span>
+              </div>
+
+              {/* Description */}
+              <p
+                className="text-white mx-auto mb-0"
+                style={{
+                  fontSize: '0.88rem',
+                  lineHeight: '1.75',
+                  maxWidth: '300px',
+                  opacity: 0.85
+                }}
+              >
+                Creating exquisite experiences and unforgettably luxurious events. Managed by Mariyappan, our detail-oriented execution turns dreams into legendary moments.
+              </p>
             </div>
           </div>
 
-          {/* Quick Links — fade up, delay 150ms */}
+          {/* Quick Links */}
           <div
             className="col-lg-2 col-md-6 col-6 footer-col footer-col-up"
             data-anim="animate-up-1"
@@ -108,28 +145,28 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Services — fade up, delay 300ms */}
+          {/* Services */}
           <div
             className="col-lg-3 col-md-6 col-6 footer-col footer-col-up"
             data-anim="animate-up-2"
           >
             <h5 className="text-gold mb-3" style={{ fontFamily: "'Playfair Display', serif" }}>Services</h5>
             <ul className="list-unstyled d-flex flex-column gap-2" style={{ fontSize: '0.9rem' }}>
-              <li><Link to="/booking?type=Wedding%20Events" className="text-decoration-none text-white hover-gold">Luxury Weddings</Link></li>
-              <li><Link to="/booking?type=Corporate%20Events" className="text-decoration-none text-white hover-gold">Corporate Galas</Link></li>
-              <li><Link to="/booking?type=Anniversary%20Celebrations" className="text-decoration-none text-white hover-gold">Anniversaries</Link></li>
-              <li><Link to="/booking?type=DJ%20%26%20Sound%20Systems" className="text-decoration-none text-white hover-gold">DJ &amp; Sound Systems</Link></li>
-              <li><Link to="/booking?type=Catering%20Services" className="text-decoration-none text-white hover-gold">Fine Dining Catering</Link></li>
+              <li><a href="https://wa.me/917358951381?text=Hello%20Sri%20Durga%20Events,%20I%20would%20like%20to%20inquire%20about%20Luxury%20Weddings.%20Please%20share%20the%20details." target="_blank" rel="noopener noreferrer" className="text-decoration-none text-white hover-gold">Luxury Weddings</a></li>
+              <li><a href="https://wa.me/917358951381?text=Hello%20Sri%20Durga%20Events,%20I%20would%20like%20to%20inquire%20about%20Corporate%20Galas.%20Please%20share%20the%20details." target="_blank" rel="noopener noreferrer" className="text-decoration-none text-white hover-gold">Corporate Galas</a></li>
+              <li><a href="https://wa.me/917358951381?text=Hello%20Sri%20Durga%20Events,%20I%20would%20like%20to%20inquire%20about%20Anniversaries.%20Please%20share%20the%20details." target="_blank" rel="noopener noreferrer" className="text-decoration-none text-white hover-gold">Anniversaries</a></li>
+              <li><a href="https://wa.me/917358951381?text=Hello%20Sri%20Durga%20Events,%20I%20would%20like%20to%20inquire%20about%20DJ%20and%20Sound%20Systems.%20Please%20share%20the%20details." target="_blank" rel="noopener noreferrer" className="text-decoration-none text-white hover-gold">DJ &amp; Sound Systems</a></li>
+              <li><a href="https://wa.me/917358951381?text=Hello%20Sri%20Durga%20Events,%20I%20would%20like%20to%20inquire%20about%20Fine%20Dining%20Catering.%20Please%20share%20the%20details." target="_blank" rel="noopener noreferrer" className="text-decoration-none text-white hover-gold">Fine Dining Catering</a></li>
             </ul>
           </div>
 
-          {/* Get in Touch — slides in from RIGHT, delay 450ms */}
+          {/* Get in Touch */}
           <div
             className="col-lg-3 col-md-6 footer-col footer-col-right"
             data-anim="animate-right"
           >
             <h5 className="text-gold mb-3" style={{ fontFamily: "'Playfair Display', serif" }}>Get in Touch</h5>
-            <ul className="list-unstyled d-flex flex-column gap-3" style={{ fontSize: '0.9rem' }}>
+            <ul className="list-unstyled d-flex flex-column gap-3" style={{ fontSize: '0.9rem', lineHeight: '1.7' }}>
               <li className="d-flex align-items-start gap-2">
                 <i className="bi bi-geo-alt-fill text-white mt-1"></i>
                 <span className="text-white">52, West Street, Kovilpathu, Kalakad - 627501</span>
@@ -158,7 +195,7 @@ const Footer = () => {
             <div className="row g-3 justify-content-center">
               {contactCards.map((card, idx) => (
                 <div key={idx} className="col-lg-3 col-sm-6 col-12">
-                  <a 
+                  <a
                     href={card.link}
                     target="_blank"
                     rel="noopener noreferrer"

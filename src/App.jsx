@@ -64,7 +64,6 @@ function App() {
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/packages" element={<Packages />} />
         <Route path="/contact" element={<Contact />} />
-        
       </Route>
 
       {/* Fallback Catch-All Route */}

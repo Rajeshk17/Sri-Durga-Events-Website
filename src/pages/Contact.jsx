@@ -174,15 +174,27 @@ const Contact = () => {
                 </div>
               </div>
 
-              {/* Styled Mock Vector Map (re-centered at Kalakad, Tamil Nadu) */}
-              <div className="border border-gold rounded p-2 bg-luxury-navy-light overflow-hidden" style={{ height: '240px', borderColor: 'rgba(212, 175, 55, 0.2) !important' }}>
-                <div className="w-100 h-100 d-flex flex-column justify-content-center align-items-center text-center position-relative" style={{ backgroundColor: 'var(--luxury-navy-deep)' }}>
-                  <div className="position-absolute w-100 h-100 opacity-10" style={{ backgroundImage: 'linear-gradient(rgba(212,175,55,0.2) 1px, transparent 1px), linear-gradient(90deg, rgba(212,175,55,0.2) 1px, transparent 1px)', backgroundSize: '20px 20px' }}></div>
-                  <i className="bi bi-geo-alt-fill text-gold fs-1 z-1 animate-bounce" style={{ animation: 'bounce 2s infinite' }}></i>
-                  <h6 className="text-white mt-3 mb-1 z-1">Sri Durga Events HQ</h6>
-                  <small className="text-white-50 z-1 text-uppercase tracking-wider" style={{ fontSize: '0.65rem' }}>Kalakad, Tamil Nadu</small>
-                  <p className="text-white px-4 mt-2 small z-1" style={{ fontSize: '0.75rem' }}>Kovilpathu, West Street</p>
-                </div>
+              {/* Embedded Google Map */}
+              <div
+                style={{
+                  borderRadius: '16px',
+                  border: '1px solid rgba(212, 175, 55, 0.3)',
+                  boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3), 0 0 15px rgba(212, 175, 55, 0.08)',
+                  overflow: 'hidden',
+                  height: '240px',
+                  width: '100%'
+                }}
+              >
+                <iframe
+                  title="Sri Durga Events Location"
+                  src="https://www.google.com/maps?q=52,West+Street,Kovilpathu,Kalakad,Tamil+Nadu+627501&output=embed"
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0, display: 'block', filter: 'contrast(1.05) brightness(0.85)' }}
+                  allowFullScreen=""
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                ></iframe>
               </div>
 
             </div>

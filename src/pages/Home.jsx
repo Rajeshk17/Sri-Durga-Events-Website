@@ -5,7 +5,7 @@ import weddingPinkLandscape from '../assets/images/wedding_pink_landscape.jpg';
 
 const SERVICE_IMAGE_MAPPING = {
   'Wedding Events': 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=800',
-  'Birthday Parties': 'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&q=80&w=800',
+  'Birthday Parties': 'https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&q=80&w=800',
   'Baby Shower': 'https://images.unsplash.com/photo-1596464716127-f2a82984de30?auto=format&fit=crop&q=80&w=800',
   'Anniversary Celebrations': 'https://images.unsplash.com/photo-1513278974582-3e1b4a4fa21e?auto=format&fit=crop&q=80&w=800',
   'Corporate Events': 'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&q=80&w=800',
@@ -66,26 +66,12 @@ const Home = () => {
     const interval = setInterval(() => {
       setPrevBgIdx(currentBgIdx);
       setCurrentBgIdx((prev) => (prev + 1) % heroBgs.length);
-    }, 3500); // 3.5 seconds visible duration
+    }, 6000); // 6 seconds visible duration
 
     return () => clearInterval(interval);
   }, [currentBgIdx]);
 
-  const handleNextBg = () => {
-    setPrevBgIdx(currentBgIdx);
-    setCurrentBgIdx((prev) => (prev + 1) % heroBgs.length);
-  };
 
-  const handlePrevBg = () => {
-    setPrevBgIdx(currentBgIdx);
-    setCurrentBgIdx((prev) => (prev - 1 + heroBgs.length) % heroBgs.length);
-  };
-
-  const handleSelectBg = (idx) => {
-    if (idx === currentBgIdx) return;
-    setPrevBgIdx(currentBgIdx);
-    setCurrentBgIdx(idx);
-  };
 
   // Preview items matching the updated list of services (plain titles, no emojis)
   const featuredServices = [
@@ -95,9 +81,9 @@ const Home = () => {
       image: SERVICE_IMAGE_MAPPING['Wedding Events']
     },
     {
-      title: 'Corporate Events',
-      description: 'Premium audiovisual setups, custom stages, and flawless execution for high-level corporate events.',
-      image: SERVICE_IMAGE_MAPPING['Corporate Events']
+      title: 'Birthday Events',
+      description: 'Premium birthday event planning for kids and adults, featuring custom themes, elegant balloon and floral decoration, cake setups, entertainment, and complete event management.',
+      image: SERVICE_IMAGE_MAPPING['Birthday Parties']
     },
     {
       title: 'DJ & Sound Systems',
@@ -108,21 +94,36 @@ const Home = () => {
 
   const testimonials = [
     {
-      name: 'Victoria & Arthur',
+      name: 'Arjun & Priya',
       role: 'Bride & Groom',
-      feedback: 'Sri Durga Events made our wedding a fairy tale. The candle-lit stages and catering were completely beyond expectation. Incredible service!'
+      feedback: 'Sri Durga Events made our wedding truly unforgettable. The grand stage decoration, floral arrangements and professional planning exceeded our expectations. Every guest appreciated the beautiful setup.'
     },
     {
-      name: 'Regina Sterling',
-      role: 'CEO, Sterling Investments',
-      feedback: 'Our annual corporate gala was flawless. The stage design, lighting, and timeline synchronization were carried out with absolute perfection. 10/10!'
+      name: 'Karthik Raj',
+      role: 'Birthday Celebration',
+      feedback: "Our son's birthday celebration was organized perfectly. The balloon decorations, lighting and entertainment created wonderful memories for our family."
     },
     {
-      name: 'Dev & Meera',
+      name: 'Ramesh Kumar',
+      role: 'Corporate Client',
+      feedback: 'Sri Durga Events managed our company event with excellent planning and flawless execution. The stage, sound system and hospitality were outstanding.'
+    },
+    {
+      name: 'Suresh & Lakshmi',
       role: 'Parents',
-      feedback: 'The Baby Shower setup was highly sophisticated, featuring pastel tones and lovely backdrops. The kids and guests were highly impressed.'
+      feedback: 'The baby shower decoration was elegant and traditional. The floral designs, seating arrangements and photography made the event very special.'
     }
   ];
+
+  const [activeTestimonialIdx, setActiveTestimonialIdx] = useState(0);
+
+  // Auto-slide testimonials every 7.5 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveTestimonialIdx((prev) => (prev + 1) % testimonials.length);
+    }, 7500);
+    return () => clearInterval(interval);
+  }, [testimonials.length]);
 
   // Redesigned premium gallery cards with high-quality luxury event images (6 equal size items)
   const redesignedGallery = [
@@ -186,25 +187,7 @@ const Home = () => {
         {/* Animated Dark Overlay with Soft Luxury Glow */}
         <div className="hero-overlay-animated"></div>
 
-        {/* Navigation Arrows */}
-        <button className="hero-arrow hero-arrow-left" onClick={handlePrevBg} aria-label="Previous Slide">
-          <i className="bi bi-chevron-left"></i>
-        </button>
-        <button className="hero-arrow hero-arrow-right" onClick={handleNextBg} aria-label="Next Slide">
-          <i className="bi bi-chevron-right"></i>
-        </button>
 
-        {/* Slider Indicators/Dots */}
-        <div className="hero-indicators">
-          {heroBgs.map((_, idx) => (
-            <button
-              key={idx}
-              className={`hero-indicator-dot ${idx === currentBgIdx ? 'active' : ''}`}
-              onClick={() => handleSelectBg(idx)}
-              aria-label={`Go to slide ${idx + 1}`}
-            />
-          ))}
-        </div>
 
         <div className="container hero-content-wrapper">
           <div className="row">
@@ -225,7 +208,7 @@ const Home = () => {
               </div>
               <div className="hero-anim-btns">
                 <div className="d-flex flex-wrap gap-3">
-                  <Link to="/booking" className="btn btn-gold px-4 py-3">Book Now</Link>
+                  <a href="tel:+917358951381" className="btn btn-gold px-4 py-3">Book Now</a>
                   <Link to="/services" className="btn btn-luxury-outline px-4 py-3">View Services</Link>
                 </div>
               </div>
@@ -271,9 +254,9 @@ const Home = () => {
                   <div className="card-body p-4 d-flex flex-column">
                     <h4 className="card-title mb-3 text-gold">{service.title}</h4>
                     <p className="card-text mb-4" style={{ fontSize: '0.9rem', color: '#FFFFFF' }}>{service.description}</p>
-                    <Link to={`/booking?type=${encodeURIComponent(service.title)}`} className="text-white text-decoration-none mt-auto fw-bold hover-gold" style={{ fontSize: '0.85rem', transition: 'color 0.2s' }}>
+                    <a href={`https://wa.me/917358951381?text=Hello%20Sri%20Durga%20Events,%20I%20would%20like%20to%20inquire%20about%20${encodeURIComponent(service.title)}.%20Please%20share%20the%20details.`} target="_blank" rel="noopener noreferrer" className="text-white text-decoration-none mt-auto fw-bold hover-gold" style={{ fontSize: '0.85rem', transition: 'color 0.2s' }}>
                       INQUIRE SERVICE <i className="bi bi-arrow-right ms-1"></i>
-                    </Link>
+                    </a>
                   </div>
                 </div>
               </div>
@@ -300,11 +283,38 @@ const Home = () => {
               </div>
             </div>
             <div className="col-lg-6">
-              <span className="text-gold text-uppercase fw-bold" style={{ fontSize: '0.8rem', letterSpacing: '2px' }}>
+              <span 
+                className="text-gold text-uppercase fw-bold" 
+                style={{ 
+                  fontSize: '0.8rem', 
+                  letterSpacing: '2px',
+                  opacity: whyChooseReveal.visible ? 1 : 0,
+                  transition: 'opacity 0.8s ease-in-out',
+                  display: 'inline-block'
+                }}
+              >
                 Signature Standards
               </span>
-              <h2 className="display-5 text-white mt-2 mb-4">Why Choose Sri Durga</h2>
-              <div className="gold-divider-start"></div>
+              <h2 
+                className="display-5 text-white mt-2 mb-4"
+                style={{
+                  opacity: whyChooseReveal.visible ? 1 : 0,
+                  transform: whyChooseReveal.visible ? 'scale(1)' : 'scale(0.98)',
+                  transition: 'opacity 0.8s ease-in-out, transform 0.8s ease-in-out',
+                  transitionDelay: '100ms'
+                }}
+              >
+                Why Choose Sri Durga
+              </h2>
+              <div 
+                className="gold-divider-start"
+                style={{
+                  width: whyChooseReveal.visible ? '80px' : '0px',
+                  boxShadow: whyChooseReveal.visible ? '0 0 8px var(--luxury-gold)' : 'none',
+                  transition: 'width 0.8s ease-in-out, box-shadow 0.8s ease-in-out',
+                  transitionDelay: '200ms'
+                }}
+              />
               
               <div className="d-flex flex-column gap-4 mt-4">
                 {[
@@ -323,16 +333,34 @@ const Home = () => {
                 ].map((item, idx) => (
                   <div 
                     key={idx} 
-                    className={`stat-box ${whyChooseReveal.visible ? 'reveal-divider' : ''}`}
+                    className="stat-box"
                     style={{
                       opacity: whyChooseReveal.visible ? 1 : 0,
-                      transform: whyChooseReveal.visible ? 'translateX(0)' : 'translateX(-30px)',
-                      transition: 'opacity 0.8s cubic-bezier(0.165, 0.84, 0.44, 1), transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1), border-color 0.8s ease',
-                      transitionDelay: whyChooseReveal.visible ? `${idx * 200}ms` : '0ms'
+                      transition: 'opacity 0.8s ease-in-out',
+                      transitionDelay: whyChooseReveal.visible ? `${idx * 300}ms` : '0ms'
                     }}
                   >
-                    <h4 className="text-gold">{item.title}</h4>
-                    <p className="mb-0 text-white" style={{ fontSize: '0.9rem' }}>{item.desc}</p>
+                    <h4 
+                      className="text-gold"
+                      style={{
+                        opacity: whyChooseReveal.visible ? 1 : 0,
+                        transition: 'opacity 0.8s ease-in-out',
+                        transitionDelay: whyChooseReveal.visible ? `${idx * 300}ms` : '0ms'
+                      }}
+                    >
+                      {item.title}
+                    </h4>
+                    <p 
+                      className="mb-0 text-white" 
+                      style={{ 
+                        fontSize: '0.9rem',
+                        opacity: whyChooseReveal.visible ? 1 : 0,
+                        transition: 'opacity 0.8s ease-in-out',
+                        transitionDelay: whyChooseReveal.visible ? `${(idx * 300) + 200}ms` : '0ms'
+                      }}
+                    >
+                      {item.desc}
+                    </p>
                   </div>
                 ))}
               </div>
@@ -342,38 +370,51 @@ const Home = () => {
       </section>
 
       {/* Testimonials Section */}
-      <section ref={testimonialsReveal.ref} className="py-5 bg-luxury-navy">
-        <div className="container py-5">
+      <section ref={testimonialsReveal.ref} className="py-5 bg-luxury-navy testimonials-section-container">
+        <div className="container py-5 position-relative">
           <div className="text-center mb-5">
             <span className="text-gold text-uppercase fw-bold" style={{ fontSize: '0.8rem', letterSpacing: '2px' }}>Client Praise</span>
             <h2 className="display-5 text-gold mt-2">Testimonials</h2>
-            <div className="gold-divider"></div>
+            <div className="gold-divider mx-auto"></div>
           </div>
 
-          <div className="row g-4">
-            {testimonials.map((t, idx) => (
-              <div key={idx} className="col-md-4">
-                <div 
-                  className="card h-100 testimonial-card"
-                  style={{
-                    opacity: testimonialsReveal.visible ? 1 : 0,
-                    transform: testimonialsReveal.visible ? 'translateY(0)' : 'translateY(30px)',
-                    transition: 'opacity 0.8s cubic-bezier(0.165, 0.84, 0.44, 1), transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1)',
-                    transitionDelay: testimonialsReveal.visible ? `${idx * 150}ms` : '0ms'
-                  }}
-                >
-                  <div className="card-body d-flex flex-column h-100">
-                    <p className="card-text text-white mb-4 fs-6 italic" style={{ fontStyle: 'italic', lineHeight: '1.6' }}>
-                      "{t.feedback}"
-                    </p>
-                    <div className="mt-auto">
-                      <h5 className="text-white mb-0">{t.name}</h5>
-                      <small className="text-uppercase fw-bold" style={{ fontSize: '0.75rem', letterSpacing: '1px', color: '#FFFFFF' }}>{t.role}</small>
+          <div className="testimonials-slider-wrapper position-relative mx-auto" style={{ maxWidth: '800px' }}>
+
+            {/* Testimonials Slides Container */}
+            <div className="testimonial-slides-container overflow-hidden" style={{ minHeight: '260px', position: 'relative' }}>
+              {testimonials.map((t, idx) => {
+                const isActive = idx === activeTestimonialIdx;
+                return (
+                  <div
+                    key={idx}
+                    className={`testimonial-slide-card ${isActive ? 'active' : ''}`}
+                    style={{
+                      position: isActive ? 'relative' : 'absolute',
+                      top: 0,
+                      left: 0,
+                      width: '100%',
+                      opacity: isActive ? 1 : 0,
+                      transform: isActive ? 'translateX(0)' : 'translateX(25px)',
+                      visibility: isActive ? 'visible' : 'hidden',
+                      transition: 'opacity 1.6s ease-in-out, transform 1.6s ease-in-out, visibility 1.6s ease-in-out'
+                    }}
+                  >
+                    <div className="card h-100 testimonial-glass-card p-4 p-md-5 text-center">
+                      <div className="quote-icon mb-4">
+                        <i className="bi bi-quote text-gold fs-1 opacity-50"></i>
+                      </div>
+                      <p className="card-text text-white mb-4 fs-5 italic" style={{ fontStyle: 'italic', lineHeight: '1.7' }}>
+                        "{t.feedback}"
+                      </p>
+                      <div className="mt-4">
+                        <h4 className="text-gold mb-1" style={{ fontFamily: "'Playfair Display', serif" }}>{t.name}</h4>
+                        <small className="text-white-50 text-uppercase fw-bold" style={{ fontSize: '0.8rem', letterSpacing: '2px' }}>{t.role}</small>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </div>
-            ))}
+                );
+              })}
+            </div>
           </div>
         </div>
       </section>
@@ -424,8 +465,8 @@ const Home = () => {
             Ready to design an elite celebration? Contact our planning consultants and receive a pre-event blueprint draft.
           </p>
           <div className="d-flex justify-content-center gap-3">
-            <Link to="/booking" className="btn btn-gold px-4 py-3">Book Consultation</Link>
-            <Link to="/contact" className="btn btn-luxury-outline px-4 py-3">Send Message</Link>
+            <a href="https://wa.me/917358951381?text=Hello%20Sri%20Durga%20Events!%20I%20am%20interested%20in%20booking%20an%20event.%20Please%20share%20the%20details%20and%20pricing." target="_blank" rel="noopener noreferrer" className="btn btn-luxury-outline px-4 py-3">Book Consultation</a>
+            <Link to="/contact" className="btn btn-gold px-4 py-3">Send Message</Link>
           </div>
         </div>
       </section>

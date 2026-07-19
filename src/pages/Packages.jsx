@@ -226,14 +226,15 @@ const Packages = () => {
                           ))}
                         </ul>
 
-                        {/* CTA Button with zoom and glow */}
                         <div className="mt-auto">
-                          <Link 
-                            to={`/booking?type=Custom&package=${encodeURIComponent(pkg.name)}`} 
+                          <a 
+                            href={`https://wa.me/917358951381?text=Hello%20Sri%20Durga%20Events,%20I%20would%20like%20to%20inquire%20about%20the%20${encodeURIComponent(pkg.name)}.%20Please%20share%20the%20details.`} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
                             className={`btn w-100 py-3 packages-btn ${isPremium ? 'btn-gold' : 'btn-luxury-outline'}`}
                           >
                             Inquire Package
-                          </Link>
+                          </a>
                         </div>
                       </div>
                     </div>

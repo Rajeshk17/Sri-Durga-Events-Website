@@ -1,104 +1,83 @@
-import React from "react";
-import { Link, NavLink } from "react-router-dom";
-import logo from "../assets/logo.jpeg";
+import React, { useState } from 'react';
+import { Link, NavLink } from 'react-router-dom';
+import logo from '../assets/images/logo.png';
 
 const Navbar = () => {
+  const [isNavCollapsed, setIsNavCollapsed] = useState(true);
+
+  const handleToggle = () => setIsNavCollapsed(!isNavCollapsed);
+  const handleClose = () => setIsNavCollapsed(true);
+
   return (
     <nav className="navbar navbar-expand-lg navbar-dark luxury-navbar fixed-top py-3">
       <div className="container">
-
-        {/* Brand */}
-        <Link className="navbar-brand d-flex align-items-center" to="/">
-          <img
-            src={logo}
-            alt="Sri Durga Events Logo"
+        {/* Brand/Logo - Sri Durga Events */}
+        <Link className="navbar-brand d-flex align-items-center" to="/" onClick={handleClose}>
+          <img 
+            src={logo} 
+            alt="Sri Durga Logo" 
+            className="logo-header"
             style={{
-              width: "50px",
-              height: "50px",
-              objectFit: "contain",
-              marginRight: "14px"
-            }}
+              marginRight: '12px'
+            }} 
           />
-
-          <div className="d-flex flex-column">
-            <span
-              className="fw-bold text-gold"
-              style={{
-                fontFamily: "'Playfair Display', serif",
-                fontSize: "2rem",
-                letterSpacing: "2px",
-                lineHeight: "1"
-              }}
-            >
+          <div className="d-flex flex-column justify-content-center" style={{ lineHeight: 1.1 }}>
+            <span className="fw-bold text-gold" style={{ fontFamily: "'Playfair Display', serif", fontSize: '1.45rem', letterSpacing: '2.5px' }}>
               SRI DURGA
             </span>
-
-            <span
-              style={{
-                color: "#ffffff",
-                letterSpacing: "5px",
-                fontSize: "13px",
-                textTransform: "uppercase"
-              }}
-            >
+            <span className="text-uppercase text-white fw-semibold" style={{ fontFamily: "'Montserrat', sans-serif", fontSize: '0.65rem', letterSpacing: '5px' }}>
               EVENTS
             </span>
           </div>
         </Link>
 
-        {/* Mobile Toggle */}
+        {/* Hamburger Toggle */}
         <button
-          className="navbar-toggler"
+          className="navbar-toggler border-0"
           type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNav"
+          onClick={handleToggle}
+          aria-controls="luxuryNavbar"
+          aria-expanded={!isNavCollapsed}
+          aria-label="Toggle navigation"
         >
           <span className="navbar-toggler-icon"></span>
         </button>
 
-        {/* Menu */}
-        <div className="collapse navbar-collapse" id="navbarNav">
-          <ul className="navbar-nav ms-auto">
-
+        {/* Nav Links */}
+        <div className={`collapse navbar-collapse ${!isNavCollapsed ? 'show' : ''}`} id="luxuryNavbar">
+          <ul className="navbar-nav mx-auto mb-2 mb-lg-0">
             <li className="nav-item">
-              <NavLink className="nav-link luxury-nav-link" to="/">
+              <NavLink className={({ isActive }) => `nav-link luxury-nav-link ${isActive ? 'active' : ''}`} to="/" onClick={handleClose}>
                 Home
               </NavLink>
             </li>
-
             <li className="nav-item">
-              <NavLink className="nav-link luxury-nav-link" to="/about">
+              <NavLink className={({ isActive }) => `nav-link luxury-nav-link ${isActive ? 'active' : ''}`} to="/about" onClick={handleClose}>
                 About
               </NavLink>
             </li>
-
             <li className="nav-item">
-              <NavLink className="nav-link luxury-nav-link" to="/services">
+              <NavLink className={({ isActive }) => `nav-link luxury-nav-link ${isActive ? 'active' : ''}`} to="/services" onClick={handleClose}>
                 Services
               </NavLink>
             </li>
-
             <li className="nav-item">
-              <NavLink className="nav-link luxury-nav-link" to="/gallery">
+              <NavLink className={({ isActive }) => `nav-link luxury-nav-link ${isActive ? 'active' : ''}`} to="/gallery" onClick={handleClose}>
                 Gallery
               </NavLink>
             </li>
-
             <li className="nav-item">
-              <NavLink className="nav-link luxury-nav-link" to="/packages">
+              <NavLink className={({ isActive }) => `nav-link luxury-nav-link ${isActive ? 'active' : ''}`} to="/packages" onClick={handleClose}>
                 Packages
               </NavLink>
             </li>
-
             <li className="nav-item">
-              <NavLink className="nav-link luxury-nav-link" to="/contact">
+              <NavLink className={({ isActive }) => `nav-link luxury-nav-link ${isActive ? 'active' : ''}`} to="/contact" onClick={handleClose}>
                 Contact
               </NavLink>
             </li>
-
           </ul>
         </div>
-
       </div>
     </nav>
   );

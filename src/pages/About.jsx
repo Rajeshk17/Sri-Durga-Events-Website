@@ -55,6 +55,8 @@ const AnimatedStat = ({ value, label }) => {
 };
 
 const About = () => {
+  const [expandedIdx, setExpandedIdx] = useState(null);
+
   const stats = [
     { value: '500+', label: 'Events Executed' },
     { value: '12+',  label: 'Years of Experience' },
@@ -105,16 +107,16 @@ const About = () => {
                 Redefining Luxury Events
               </h2>
               <p className="text-white" style={{ lineHeight: '1.8' }}>
-                Sri Durga Events, founded by Velmani Kandan and managed by Mariyappan, is located at Kalakad. We reject the generic, cookie-cutter approach to celebrations in favor of bespoke, highly synchronized experiences.
+                Sri Durga Events is a premium event management company based in Kalakad, dedicated to creating elegant and unforgettable celebrations. We specialize in luxury weddings, birthdays, baby showers, anniversaries, corporate events, photography, catering, stage decoration, DJ &amp; sound systems, and customized event experiences.
               </p>
               <p className="text-white" style={{ lineHeight: '1.8' }}>
-                We design weddings, birthdays, baby showers, anniversaries, mocktail catering, cinema photography, and high-impact sound setups. Our team takes care of all logistics from floral architecture and venue design to lighting timelines, ensuring a premium delivery.
+                Our experienced team carefully plans every detail—from creative concepts and venue styling to flawless execution—ensuring every celebration becomes a memorable experience.
               </p>
             </div>
             <div className="col-lg-6">
               <img
-                src="https://images.unsplash.com/photo-1604014237800-1c9102c219da?auto=format&fit=crop&q=80&w=800"
-                alt="Royal luxury wedding stage with floral decorations and golden lights"
+                src="https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&q=80&w=800"
+                alt="Premium luxury wedding stage with golden floral decorations and elegant lighting"
                 className="img-fluid rounded border border-gold w-100"
                 style={{ borderColor: 'rgba(212, 175, 55, 0.3) !important', objectFit: 'cover', maxHeight: '480px' }}
               />
@@ -160,7 +162,7 @@ const About = () => {
         </div>
       </section>
 
-      {/* Team Section */}
+      {/* Team Section — Premium Interactive Showcase */}
       <section className="py-5 bg-luxury-navy-light">
         <div className="container py-4">
           <div className="text-center mb-5">
@@ -170,29 +172,64 @@ const About = () => {
           </div>
 
           <div className="row g-4">
-            {team.map((member, idx) => (
-              <div key={idx} className="col-lg-4 col-md-6">
-                <div className="card h-100 luxury-card">
-                  <div className="luxury-card-img-wrapper" style={{ height: '300px' }}>
-                    <img
-                      src={member.image}
-                      alt={member.name}
-                      className="card-img-top w-100 h-100 object-fit-cover luxury-card-img"
-                    />
-                  </div>
-                  <div className="card-body p-4 text-center">
-                    <h4 className="text-gold mb-1">{member.name}</h4>
-                    <span className="text-uppercase fw-bold" style={{ fontSize: '0.75rem', letterSpacing: '1.5px', color: '#FFFFFF' }}>
-                      {member.role}
-                    </span>
-                    <hr className="mx-auto my-3" style={{ width: '40px', height: '1.5px', backgroundColor: '#D4AF37', opacity: 0.4, border: 'none' }} />
-                    <p className="text-white mb-0" style={{ fontSize: '0.85rem', lineHeight: '1.6' }}>
-                      {member.description}
-                    </p>
+            {team.map((member, idx) => {
+              const isOpen = expandedIdx === idx;
+              return (
+                <div key={idx} className="col-lg-4 col-md-6">
+                  <div
+                    className="card luxury-card"
+                    style={{
+                      transition: 'box-shadow 0.4s ease, border-color 0.4s ease',
+                      borderColor: isOpen ? 'rgba(212, 175, 55, 0.45)' : undefined,
+                      boxShadow: isOpen ? '0 10px 35px rgba(212, 175, 55, 0.18)' : undefined
+                    }}
+                  >
+                    {/* Image */}
+                    <div className="luxury-card-img-wrapper" style={{ height: '300px' }}>
+                      <img
+                        src={member.image}
+                        alt={member.name}
+                        className="card-img-top w-100 h-100 object-fit-cover luxury-card-img"
+                      />
+                    </div>
+
+                    {/* Name + Role (always visible) */}
+                    <div className="p-4 text-center">
+                      <h4 className="text-gold mb-1">{member.name}</h4>
+                      <span className="text-uppercase fw-bold d-block" style={{ fontSize: '0.75rem', letterSpacing: '1.5px', color: '#FFFFFF' }}>
+                        {member.role}
+                      </span>
+
+                      {/* Read / Hide Profile Button */}
+                      <button
+                        onClick={() => setExpandedIdx(isOpen ? null : idx)}
+                        className="team-profile-btn"
+                      >
+                        <i className={`bi ${isOpen ? 'bi-chevron-up' : 'bi-chevron-down'}`}></i>
+                        {isOpen ? 'Hide Profile' : 'Read Profile'}
+                      </button>
+                    </div>
+
+                    {/* Expandable Biography */}
+                    <div
+                      style={{
+                        maxHeight: isOpen ? '300px' : '0',
+                        opacity: isOpen ? 1 : 0,
+                        overflow: 'hidden',
+                        transition: 'max-height 0.45s cubic-bezier(0.165, 0.84, 0.44, 1), opacity 0.35s ease'
+                      }}
+                    >
+                      <div className="px-4 pb-4 text-center">
+                        <hr className="mx-auto mt-0 mb-3" style={{ width: '40px', height: '1.5px', backgroundColor: '#D4AF37', opacity: 0.4, border: 'none' }} />
+                        <p className="text-white mb-0" style={{ fontSize: '0.85rem', lineHeight: '1.7' }}>
+                          {member.description}
+                        </p>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
