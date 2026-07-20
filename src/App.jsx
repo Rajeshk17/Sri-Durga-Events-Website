@@ -9,6 +9,8 @@ import Services from './pages/Services';
 import Gallery from './pages/Gallery';
 import Packages from './pages/Packages';
 import Contact from './pages/Contact';
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import TermsOfService from './pages/TermsOfService';
 
 // Layout wrapper for pages requiring standard navigation
 const MainLayout = () => {
@@ -64,6 +66,8 @@ function App() {
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/packages" element={<Packages />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="/terms-of-service" element={<TermsOfService />} />
       </Route>
 
       {/* Fallback Catch-All Route */}

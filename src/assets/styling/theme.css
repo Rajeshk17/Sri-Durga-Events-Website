@@ -355,37 +355,39 @@ h1, h2, h3, h4, h5, h6, .luxury-heading {
   text-transform: uppercase;
   padding: 0.5rem 1rem !important;
   position: relative;
-  transition: transform 0.3s ease, color 0.3s ease, text-shadow 0.3s ease !important;
+  transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94), color 0.35s ease, text-shadow 0.35s ease !important;
 }
 
 .luxury-nav-link::after {
   content: '';
   position: absolute;
   bottom: 0;
-  left: 0;
+  left: 50%;
+  transform: translateX(-50%);
   width: 0;
   height: 2px;
   background-color: var(--luxury-gold);
-  transition: width 0.3s ease;
+  box-shadow: 0 0 8px var(--luxury-gold);
+  transition: width 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .luxury-nav-link:hover {
   color: var(--luxury-gold) !important;
   transform: translateY(-2px);
-  text-shadow: 0 0 8px rgba(212, 175, 55, 0.4);
+  text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
 }
 
 .luxury-nav-link:hover::after {
-  width: 100%;
+  width: 70%;
 }
 
 .luxury-nav-link.active {
   color: var(--luxury-gold) !important;
-  text-shadow: 0 0 8px rgba(212, 175, 55, 0.4);
+  text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
 }
 
 .luxury-nav-link.active::after {
-  width: 100%;
+  width: 70%;
 }
 
 /* Stats Counter */
@@ -699,8 +701,8 @@ section .lead {
   transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), 
               box-shadow 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), 
               border-color 0.4s ease !important;
-  opacity: 0;
-  transform: translateY(40px);
+opacity: 1;
+transform: translateY(0);
 }
 
 .package-card.package-card-visible {
@@ -1442,11 +1444,257 @@ section .lead {
   color: var(--luxury-gold);
 }
 
-.team-profile-btn:active {
-  transform: translateY(0);
-}
-
 .team-profile-btn i {
   font-size: 0.65rem;
   transition: transform 0.3s ease;
+}
+
+/* ═══════════════════════════════════════════════
+   PREMIUM SERVICES SECTION REDESIGN
+   ═══════════════════════════════════════════════ */
+
+/* Responsive CSS Grid Layout */
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* Desktop: 3 columns */
+  gap: 1.8rem;
+  justify-content: center;
+}
+
+/* Tablet (Medium & Large): 2 Columns */
+@media (max-width: 991px) {
+  .services-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Mobile: Stacked single column centered */
+@media (max-width: 575px) {
+  .services-grid {
+    grid-template-columns: 1fr;
+    max-width: 380px;
+    margin: 0 auto;
+  }
+}
+
+/* Fade-up animation container trigger */
+.service-card-wrapper {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s cubic-bezier(0.165, 0.84, 0.44, 1),
+              transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
+  display: flex;
+  flex-direction: column;
+}
+
+.service-card-wrapper.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Card Hover Lift & Glow Accent */
+.service-luxury-card {
+  height: 100%;
+  width: 100%;
+  background: var(--luxury-navy-light) !important;
+  border: 1px solid rgba(212, 175, 55, 0.15) !important;
+  border-radius: 16px !important;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              box-shadow 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              border-color 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+}
+
+.service-luxury-card:hover {
+  transform: translateY(-8px) !important;
+  border-color: var(--luxury-gold) !important;
+  box-shadow: 0 12px 30px rgba(212, 175, 55, 0.22), 0 0 15px rgba(212, 175, 55, 0.1) !important;
+}
+
+/* Image zoom styling */
+.service-luxury-card .luxury-card-img-wrapper {
+  overflow: hidden;
+  position: relative;
+}
+
+.service-luxury-card .luxury-card-img {
+  transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+}
+
+.service-luxury-card:hover .luxury-card-img {
+  transform: scale(1.05); /* 5% zoom */
+}
+
+/* Booking Button Premium styling */
+.service-book-btn {
+  background: transparent !important;
+  color: var(--luxury-gold) !important;
+  border: 1px solid var(--luxury-gold) !important;
+  border-radius: 50px !important;
+  font-weight: 600 !important;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: all 0.3s ease !important;
+}
+
+.service-book-btn:hover {
+  background: var(--luxury-gold) !important;
+  color: var(--luxury-navy-deep) !important;
+  box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3) !important;
+}
+
+/* ═══════════════════════════════════════════════
+   PREMIUM EXECUTIVE TEAM HOVER & TAP REDESIGN
+   ═══════════════════════════════════════════════ */
+
+/* Base card transitions */
+.team-luxury-card {
+  overflow: hidden;
+  transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              box-shadow 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              border-color 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+  border: 1px solid rgba(212, 175, 55, 0.15) !important;
+  background: var(--luxury-navy-light) !important;
+  border-radius: 16px !important;
+}
+
+/* Image zoom default */
+.team-luxury-card .luxury-card-img-wrapper {
+  overflow: hidden;
+  position: relative;
+}
+
+.team-luxury-card .luxury-card-img {
+  transition: transform 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+}
+
+/* Active & Hover Card styles */
+.team-luxury-card:hover,
+.team-luxury-card.active {
+  border-color: var(--luxury-gold) !important;
+  box-shadow: 0 10px 35px rgba(212, 175, 55, 0.22), 0 0 15px rgba(212, 175, 55, 0.1) !important;
+}
+
+.team-luxury-card:hover .luxury-card-img,
+.team-luxury-card.active .luxury-card-img {
+  transform: scale(1.05); /* 5% zoom */
+}
+
+/* Expandable Bio Layout and Transitions */
+.team-luxury-card .team-bio-collapse {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.38s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              opacity 0.3s ease;
+}
+
+.team-luxury-card:hover .team-bio-collapse,
+.team-luxury-card.active .team-bio-collapse {
+  max-height: 250px; /* Expands dynamically to fit bio content */
+  opacity: 1;
+}
+
+/* ═══════════════════════════════════════════════
+   WHY CHOOSE SRI DURGA — PREMIUM REDESIGN STYLES
+   ═══════════════════════════════════════════════ */
+
+/* Stacked Photo Cards container */
+.stacked-cards-container {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  height: 440px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Individual Stacked Card Styles */
+.stacked-card {
+  background-color: var(--luxury-navy-deep);
+}
+
+.stacked-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Elegant Text Overlay on Cards */
+.stacked-card-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 12px 18px;
+  background: linear-gradient(to top, rgba(11, 19, 43, 0.9) 20%, transparent 100%);
+  z-index: 2;
+}
+
+.stacked-card-title {
+  color: #FFFFFF;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+@media (max-width: 991px) {
+  .stacked-cards-container {
+    max-width: 440px;
+    height: 380px;
+    margin-bottom: 2rem;
+  }
+}
+
+/* Custom Booking Button for Framer Motion Cards */
+.service-book-btn-framer {
+  background: transparent !important;
+  color: var(--luxury-gold) !important;
+  border: 1px solid var(--luxury-gold) !important;
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
+  transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+}
+
+.service-book-btn-framer:hover {
+  background: var(--luxury-gold) !important;
+  color: var(--luxury-navy-deep) !important;
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.6), 0 4px 15px rgba(212, 175, 55, 0.3) !important;
+}
+
+/* Custom Inquire Button for Framer Motion Cards */
+.package-inquire-btn-framer {
+  background: transparent !important;
+  color: var(--luxury-gold) !important;
+  border: 1px solid var(--luxury-gold) !important;
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
+  transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+}
+
+.package-inquire-btn-framer:hover {
+  background: var(--luxury-gold) !important;
+  color: var(--luxury-navy-deep) !important;
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.6), 0 4px 15px rgba(212, 175, 55, 0.3) !important;
+}
+
+/* Subtle golden shine animation on package title */
+.shimmer-gold-text {
+  background: linear-gradient(to right, #D4AF37 20%, #FFF 40%, #FFF 60%, #D4AF37 80%);
+  background-size: 200% auto;
+  color: #D4AF37;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shine-gold 5s linear infinite;
+}
+
+@keyframes shine-gold {
+  to {
+    background-position: 200% center;
+  }
 }

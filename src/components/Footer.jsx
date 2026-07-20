@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import logo from '../assets/images/logo.png';
+import { motion } from 'framer-motion';
+import logo from '../assets/images/logo/logo.png';
 
 /* ── fires once when the footer row enters the viewport ── */
 function useFooterAnimation(ref) {
@@ -56,12 +57,15 @@ const Footer = () => {
     }
   ];
 
-  /* Social icon data for the branding column */
-  const socialIcons = [
-    { href: 'https://wa.me/917358951381', icon: 'bi-whatsapp', color: '#25D366', label: 'WhatsApp' },
-    { href: 'https://instagram.com/sridurga_events2', icon: 'bi-instagram', color: '#E1306C', label: 'Instagram' },
-    { href: 'mailto:sridurgaevents@gmail.com', icon: 'bi-envelope-fill', color: '#FFFFFF', label: 'Email' }
-  ];
+  const footerHeadingVariants = {
+    hidden: { opacity: 0, y: 25 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
+  };
+
+  const footerLinkVariants = {
+    hidden: { opacity: 0, x: -15 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } }
+  };
 
   return (
     <footer
@@ -135,14 +139,33 @@ const Footer = () => {
             className="col-lg-2 col-md-6 col-6 footer-col footer-col-up"
             data-anim="animate-up-1"
           >
-            <h5 className="text-gold mb-3" style={{ fontFamily: "'Playfair Display', serif" }}>Quick Links</h5>
-            <ul className="list-unstyled d-flex flex-column gap-2" style={{ fontSize: '0.9rem' }}>
-              <li><Link to="/" className="text-decoration-none text-white hover-gold">Home</Link></li>
-              <li><Link to="/about" className="text-decoration-none text-white hover-gold">About Us</Link></li>
-              <li><Link to="/services" className="text-decoration-none text-white hover-gold">Our Services</Link></li>
-              <li><Link to="/gallery" className="text-decoration-none text-white hover-gold">Gallery</Link></li>
-              <li><Link to="/packages" className="text-decoration-none text-white hover-gold">Packages</Link></li>
-            </ul>
+            <motion.h5 
+              variants={footerHeadingVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              className="text-gold mb-3" 
+              style={{ fontFamily: "'Playfair Display', serif" }}
+            >
+              Quick Links
+            </motion.h5>
+            <motion.ul 
+              variants={{
+                hidden: {},
+                visible: { transition: { staggerChildren: 0.08 } }
+              }}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              className="list-unstyled d-flex flex-column gap-2" 
+              style={{ fontSize: '0.9rem' }}
+            >
+              <motion.li variants={footerLinkVariants}><Link to="/" className="text-decoration-none text-white hover-gold d-inline-block">Home</Link></motion.li>
+              <motion.li variants={footerLinkVariants}><Link to="/about" className="text-decoration-none text-white hover-gold d-inline-block">About Us</Link></motion.li>
+              <motion.li variants={footerLinkVariants}><Link to="/services" className="text-decoration-none text-white hover-gold d-inline-block">Our Services</Link></motion.li>
+              <motion.li variants={footerLinkVariants}><Link to="/gallery" className="text-decoration-none text-white hover-gold d-inline-block">Gallery</Link></motion.li>
+              <motion.li variants={footerLinkVariants}><Link to="/packages" className="text-decoration-none text-white hover-gold d-inline-block">Packages</Link></motion.li>
+            </motion.ul>
           </div>
 
           {/* Services */}
@@ -150,14 +173,33 @@ const Footer = () => {
             className="col-lg-3 col-md-6 col-6 footer-col footer-col-up"
             data-anim="animate-up-2"
           >
-            <h5 className="text-gold mb-3" style={{ fontFamily: "'Playfair Display', serif" }}>Services</h5>
-            <ul className="list-unstyled d-flex flex-column gap-2" style={{ fontSize: '0.9rem' }}>
-              <li><a href="https://wa.me/917358951381?text=Hello%20Sri%20Durga%20Events,%20I%20would%20like%20to%20inquire%20about%20Luxury%20Weddings.%20Please%20share%20the%20details." target="_blank" rel="noopener noreferrer" className="text-decoration-none text-white hover-gold">Luxury Weddings</a></li>
-              <li><a href="https://wa.me/917358951381?text=Hello%20Sri%20Durga%20Events,%20I%20would%20like%20to%20inquire%20about%20Corporate%20Galas.%20Please%20share%20the%20details." target="_blank" rel="noopener noreferrer" className="text-decoration-none text-white hover-gold">Corporate Galas</a></li>
-              <li><a href="https://wa.me/917358951381?text=Hello%20Sri%20Durga%20Events,%20I%20would%20like%20to%20inquire%20about%20Anniversaries.%20Please%20share%20the%20details." target="_blank" rel="noopener noreferrer" className="text-decoration-none text-white hover-gold">Anniversaries</a></li>
-              <li><a href="https://wa.me/917358951381?text=Hello%20Sri%20Durga%20Events,%20I%20would%20like%20to%20inquire%20about%20DJ%20and%20Sound%20Systems.%20Please%20share%20the%20details." target="_blank" rel="noopener noreferrer" className="text-decoration-none text-white hover-gold">DJ &amp; Sound Systems</a></li>
-              <li><a href="https://wa.me/917358951381?text=Hello%20Sri%20Durga%20Events,%20I%20would%20like%20to%20inquire%20about%20Fine%20Dining%20Catering.%20Please%20share%20the%20details." target="_blank" rel="noopener noreferrer" className="text-decoration-none text-white hover-gold">Fine Dining Catering</a></li>
-            </ul>
+            <motion.h5 
+              variants={footerHeadingVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              className="text-gold mb-3" 
+              style={{ fontFamily: "'Playfair Display', serif" }}
+            >
+              Services
+            </motion.h5>
+            <motion.ul 
+              variants={{
+                hidden: {},
+                visible: { transition: { staggerChildren: 0.08 } }
+              }}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              className="list-unstyled d-flex flex-column gap-2" 
+              style={{ fontSize: '0.9rem' }}
+            >
+              <motion.li variants={footerLinkVariants}><a href="https://wa.me/917358951381?text=Hello%20Sri%20Durga%20Events,%20I%20would%20like%20to%20inquire%20about%20Luxury%20Weddings.%20Please%20share%20the%20details." target="_blank" rel="noopener noreferrer" className="text-decoration-none text-white hover-gold d-inline-block">Luxury Weddings</a></motion.li>
+              <motion.li variants={footerLinkVariants}><a href="https://wa.me/917358951381?text=Hello%20Sri%20Durga%20Events,%20I%20would%20like%20to%20inquire%20about%20Corporate%20Galas.%20Please%20share%20the%20details." target="_blank" rel="noopener noreferrer" className="text-decoration-none text-white hover-gold d-inline-block">Corporate Galas</a></motion.li>
+              <motion.li variants={footerLinkVariants}><a href="https://wa.me/917358951381?text=Hello%20Sri%20Durga%20Events,%20I%20would%20like%20to%20inquire%20about%20Anniversaries.%20Please%20share%20the%20details." target="_blank" rel="noopener noreferrer" className="text-decoration-none text-white hover-gold d-inline-block">Anniversaries</a></motion.li>
+              <motion.li variants={footerLinkVariants}><a href="https://wa.me/917358951381?text=Hello%20Sri%20Durga%20Events,%20I%20would%20like%20to%20inquire%20about%20DJ%20and%20Sound%20Systems.%20Please%20share%20the%20details." target="_blank" rel="noopener noreferrer" className="text-decoration-none text-white hover-gold d-inline-block">DJ &amp; Sound Systems</a></motion.li>
+              <motion.li variants={footerLinkVariants}><a href="https://wa.me/917358951381?text=Hello%20Sri%20Durga%20Events,%20I%20would%20like%20to%20inquire%20about%20Fine%20Dining%20Catering.%20Please%20share%20the%20details." target="_blank" rel="noopener noreferrer" className="text-decoration-none text-white hover-gold d-inline-block">Fine Dining Catering</a></motion.li>
+            </motion.ul>
           </div>
 
           {/* Get in Touch */}
@@ -165,21 +207,40 @@ const Footer = () => {
             className="col-lg-3 col-md-6 footer-col footer-col-right"
             data-anim="animate-right"
           >
-            <h5 className="text-gold mb-3" style={{ fontFamily: "'Playfair Display', serif" }}>Get in Touch</h5>
-            <ul className="list-unstyled d-flex flex-column gap-3" style={{ fontSize: '0.9rem', lineHeight: '1.7' }}>
-              <li className="d-flex align-items-start gap-2">
+            <motion.h5 
+              variants={footerHeadingVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              className="text-gold mb-3" 
+              style={{ fontFamily: "'Playfair Display', serif" }}
+            >
+              Get in Touch
+            </motion.h5>
+            <motion.ul 
+              variants={{
+                hidden: {},
+                visible: { transition: { staggerChildren: 0.08 } }
+              }}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              className="list-unstyled d-flex flex-column gap-3" 
+              style={{ fontSize: '0.9rem', lineHeight: '1.7' }}
+            >
+              <motion.li variants={footerLinkVariants} className="d-flex align-items-start gap-2">
                 <i className="bi bi-geo-alt-fill text-white mt-1"></i>
                 <span className="text-white">52, West Street, Kovilpathu, Kalakad - 627501</span>
-              </li>
-              <li className="d-flex align-items-center gap-2">
+              </motion.li>
+              <motion.li variants={footerLinkVariants} className="d-flex align-items-center gap-2">
                 <i className="bi bi-telephone-fill text-white"></i>
                 <span className="text-white">+91 73589 51381</span>
-              </li>
-              <li className="d-flex align-items-center gap-2">
+              </motion.li>
+              <motion.li variants={footerLinkVariants} className="d-flex align-items-center gap-2">
                 <i className="bi bi-envelope-fill text-white"></i>
                 <span className="text-white">sridurgaevents@gmail.com</span>
-              </li>
-            </ul>
+              </motion.li>
+            </motion.ul>
           </div>
 
         </div>{/* /row */}
@@ -188,7 +249,16 @@ const Footer = () => {
         <div className="row mt-5 mb-4">
           <div className="col-12 text-center mb-4">
             <span className="text-gold text-uppercase fw-bold" style={{ fontSize: '0.75rem', letterSpacing: '2px' }}>Stay Connected</span>
-            <h5 className="text-white mt-1" style={{ fontFamily: "'Playfair Display', serif", fontSize: '1.2rem' }}>Connect With Us</h5>
+            <motion.h5 
+              variants={footerHeadingVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              className="text-white mt-1" 
+              style={{ fontFamily: "'Playfair Display', serif", fontSize: '1.2rem' }}
+            >
+              Connect With Us
+            </motion.h5>
             <div className="gold-divider mx-auto" style={{ width: '40px' }}></div>
           </div>
           <div className="col-12">
@@ -225,8 +295,8 @@ const Footer = () => {
             &copy; {new Date().getFullYear()} Sri Durga Events. All Rights Reserved. Crafted for Ultimate Luxury.
           </p>
           <div className="d-flex gap-3" style={{ fontSize: '0.8rem' }}>
-            <a href="#" className="text-decoration-none text-white hover-gold">Privacy Policy</a>
-            <a href="#" className="text-decoration-none text-white hover-gold">Terms of Service</a>
+            <Link to="/privacy-policy" className="text-decoration-none text-white hover-gold">Privacy Policy</Link>
+            <Link to="/terms-of-service" className="text-decoration-none text-white hover-gold">Terms of Service</Link>
           </div>
         </div>
 

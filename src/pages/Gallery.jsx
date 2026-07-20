@@ -1,9 +1,48 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { motion } from 'framer-motion';
 import LoadingSpinner from '../components/LoadingSpinner';
 
-/* ────────────────────────────────────────────────────────────────────────
-   FALLBACK DATA  (30 items across 5 categories with titles & descriptions)
-   ──────────────────────────────────────────────────────────────────────── */
+// Weddings
+import wedding1 from '../assets/images/gallery/weddings/wedding_1.jpeg';
+import wedding2 from '../assets/images/gallery/weddings/wedding_2.jpeg';
+import wedding3 from '../assets/images/gallery/weddings/wedding_3.jpeg';
+import wedding4 from '../assets/images/gallery/weddings/wedding_4.jpeg';
+import wedding5 from '../assets/images/gallery/weddings/wedding_5.jpeg';
+import wedding6 from '../assets/images/gallery/weddings/wedding_6.jpeg';
+
+// Corporate
+import corporate1 from '../assets/images/gallery/corporate/corporate_1.jpeg';
+import corporate2 from '../assets/images/gallery/corporate/corporate_2.jpeg';
+import corporate3 from '../assets/images/gallery/corporate/corporate_3.jpeg';
+import corporate4 from '../assets/images/gallery/corporate/corporate_4.jpeg';
+import corporate5 from '../assets/images/gallery/corporate/corporate_5.jpeg';
+import corporate6 from '../assets/images/gallery/corporate/corporate_6.jpeg';
+
+// Birthdays
+import birthday1 from '../assets/images/gallery/birthday/birthday_1.jpeg';
+import birthday2 from '../assets/images/gallery/birthday/birthday_2.jpeg';
+import birthday3 from '../assets/images/gallery/birthday/birthday_3.jpeg';
+import birthday4 from '../assets/images/gallery/birthday/birthday_4.jpeg';
+import birthday5 from '../assets/images/gallery/birthday/birthday_5.jpeg';
+import birthday6 from '../assets/images/gallery/birthday/birthday_6.jpeg';
+
+// Catering
+import catering1 from '../assets/images/gallery/catering/catering_1.jpeg';
+import catering2 from '../assets/images/gallery/catering/catering_2.jpeg';
+import catering3 from '../assets/images/gallery/catering/catering_3.jpeg';
+import catering4 from '../assets/images/gallery/catering/catering_4.jpeg';
+import catering5 from '../assets/images/gallery/catering/catering_5.jpeg';
+import catering6 from '../assets/images/gallery/catering/catering_6.jpeg';
+
+// Sound & Stage
+import sound1 from '../assets/images/gallery/sound-stage/sound_1.jpeg';
+import sound2 from '../assets/images/gallery/sound-stage/sound_2.jpeg';
+import sound3 from '../assets/images/gallery/sound-stage/sound_3.jpeg';
+import sound4 from '../assets/images/gallery/sound-stage/sound_4.jpeg';
+import sound5 from '../assets/images/gallery/sound-stage/sound_5.jpeg';
+import sound6 from '../assets/images/gallery/sound-stage/sound_6.jpeg';
+
+/* ── FALLBACK DATA  (Exactly 6 local images for every gallery category) ── */
 const FALLBACK_ITEMS = [
   /* WEDDINGS */
   {
@@ -11,42 +50,42 @@ const FALLBACK_ITEMS = [
     category: 'weddings',
     title: 'Luxury Wedding Stage',
     description: 'Bespoke stage with floral arrangements and golden lights',
-    image: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=800'
+    image: wedding1
   },
   {
     id: 'w2',
     category: 'weddings',
     title: 'Bride & Groom Portrait',
     description: 'Romantic couples portrait captured in cinematic style',
-    image: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&q=80&w=800'
+    image: wedding2
   },
   {
     id: 'w3',
     category: 'weddings',
     title: 'Floral Mandap Decor',
     description: 'Traditional mandap decor with fresh exotic flowers',
-    image: 'https://images.unsplash.com/photo-1604014237800-1c9102c219da?auto=format&fit=crop&q=80&w=800'
+    image: wedding3
   },
   {
     id: 'w4',
     category: 'weddings',
     title: 'Reception Decoration',
     description: 'Grand reception hall design with crystal chandeliers',
-    image: 'https://images.unsplash.com/photo-1519225495810-7512c696505a?auto=format&fit=crop&q=80&w=800'
+    image: wedding4
   },
   {
     id: 'w5',
     category: 'weddings',
     title: 'Wedding Entrance Arch',
     description: 'Elegant entrance walkway with candles and drapery',
-    image: 'https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&q=80&w=800'
+    image: wedding5
   },
   {
     id: 'w6',
     category: 'weddings',
     title: 'Candle Pathway Aisle',
     description: 'Charming candle-lit path leading to the wedding stage',
-    image: 'https://images.unsplash.com/photo-1544078751-58fee2d8a03b?auto=format&fit=crop&q=80&w=800'
+    image: wedding6
   },
 
   /* CORPORATE */
@@ -55,42 +94,42 @@ const FALLBACK_ITEMS = [
     category: 'corporate',
     title: 'Corporate Conference',
     description: 'Professional executive summit layout and seating',
-    image: 'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&q=80&w=800'
+    image: corporate1
   },
   {
     id: 'c2',
     category: 'corporate',
     title: 'Business Seminar',
     description: 'Interactive seminar hall setup with advanced projector screen',
-    image: 'https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&q=80&w=800'
+    image: corporate2
   },
   {
     id: 'c3',
     category: 'corporate',
     title: 'Product Launch Event',
     description: 'High-impact stage design for premium product launches',
-    image: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&q=80&w=800'
+    image: corporate3
   },
   {
     id: 'c4',
     category: 'corporate',
     title: 'Award Ceremony Night',
     description: 'Elegant banquet setup for corporate recognition nights',
-    image: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&q=80&w=800'
+    image: corporate4
   },
   {
     id: 'c5',
     category: 'corporate',
     title: 'Luxury Meeting Hall',
     description: 'Boardroom configuration with high-end furniture',
-    image: 'https://images.unsplash.com/photo-1517457373958-b7bdd4587205?auto=format&fit=crop&q=80&w=800'
+    image: corporate5
   },
   {
     id: 'c6',
     category: 'corporate',
     title: 'Conference Audience',
     description: 'Flawless crowd management and audience view',
-    image: 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&q=80&w=800'
+    image: corporate6
   },
 
   /* BIRTHDAYS */
@@ -99,42 +138,42 @@ const FALLBACK_ITEMS = [
     category: 'birthday',
     title: 'Balloon Decoration Setup',
     description: 'Whimsical arches and pillars of premium colored balloons',
-    image: 'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&q=80&w=800'
+    image: birthday1
   },
   {
     id: 'b2',
     category: 'birthday',
     title: 'Kids Birthday Party',
     description: 'Fun character-themed party setup with games area',
-    image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&q=80&w=800'
+    image: birthday2
   },
   {
     id: 'b3',
     category: 'birthday',
     title: 'Adult Birthday Elegance',
     description: 'Sophisticated lounge theme with custom neon signs',
-    image: 'https://images.unsplash.com/photo-1549417229-aa67d3263c09?auto=format&fit=crop&q=80&w=800'
+    image: birthday3
   },
   {
     id: 'b4',
     category: 'birthday',
     title: 'Cake Cutting Moment',
     description: 'Beautiful central dessert table and lighting highlight',
-    image: 'https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?auto=format&fit=crop&q=80&w=800'
+    image: birthday4
   },
   {
     id: 'b5',
     category: 'birthday',
     title: 'Premium Birthday Backdrop',
     description: 'Custom photobooth backdrop with floral and balloon accents',
-    image: 'https://images.unsplash.com/photo-1587271339318-2e78e3c63681?auto=format&fit=crop&q=80&w=800'
+    image: birthday5
   },
   {
     id: 'b6',
     category: 'birthday',
     title: 'Party Lighting & Ambiance',
     description: 'Energetic dancefloor strobe and wash lighting setup',
-    image: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&q=80&w=800'
+    image: birthday6
   },
 
   /* CATERING */
@@ -143,42 +182,42 @@ const FALLBACK_ITEMS = [
     category: 'catering',
     title: 'Premium Buffet Spread',
     description: 'Exquisite multi-cuisine layout with brass warming dishes',
-    image: 'https://images.unsplash.com/photo-1555244162-803834f70033?auto=format&fit=crop&q=80&w=800'
+    image: catering1
   },
   {
     id: 'f2',
     category: 'catering',
     title: 'Live Food Counter',
     description: 'Interactive dining station managed by professional chefs',
-    image: 'https://images.unsplash.com/photo-1469371670807-013ccf25f16a?auto=format&fit=crop&q=80&w=800'
+    image: catering2
   },
   {
     id: 'f3',
     category: 'catering',
     title: 'Dessert Table Display',
     description: 'Delectable array of pastries, chocolates and custom cakes',
-    image: 'https://images.unsplash.com/photo-1551024601-bec78aea704b?auto=format&fit=crop&q=80&w=800'
+    image: catering3
   },
   {
     id: 'f4',
     category: 'catering',
     title: 'Fine Dining Table Setup',
     description: 'Luxurious formal dinner arrangement with premium cutlery',
-    image: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&q=80&w=800'
+    image: catering4
   },
   {
     id: 'f5',
     category: 'catering',
     title: 'Wedding Catering Service',
     description: 'Traditional and contemporary banquet menu presentation',
-    image: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&q=80&w=800'
+    image: catering5
   },
   {
     id: 'f6',
     category: 'catering',
     title: 'Chef Serving Guests',
     description: 'First-class hospitality and live culinary assistance',
-    image: 'https://images.unsplash.com/photo-1493770348161-369560ae357d?auto=format&fit=crop&q=80&w=800'
+    image: catering6
   },
 
   /* SOUND & STAGE */
@@ -187,79 +226,99 @@ const FALLBACK_ITEMS = [
     category: 'music',
     title: 'DJ Performance Night',
     description: 'Club-grade sound systems and moving beam light consoles',
-    image: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&q=80&w=800'
+    image: sound1
   },
   {
     id: 's2',
     category: 'music',
     title: 'Concert Stage Setup',
     description: 'Vibrant outdoor stage structure with audio trusses',
-    image: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&q=80&w=800'
+    image: sound2
   },
   {
     id: 's3',
     category: 'music',
     title: 'LED Wall Spectacular',
     description: 'Ultra-high definition backdrop displaying custom visual animations',
-    image: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&q=80&w=800'
+    image: sound3
   },
   {
     id: 's4',
     category: 'music',
     title: 'Professional Stage Lighting',
     description: 'Intelligent moving head lights and atmospheric haze',
-    image: 'https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?auto=format&fit=crop&q=80&w=800'
+    image: sound4
   },
   {
     id: 's5',
     category: 'music',
     title: 'Live Music Band',
     description: 'Acoustically optimized venue design for live bands',
-    image: 'https://images.unsplash.com/photo-1458560871784-56d23406c091?auto=format&fit=crop&q=80&w=800'
+    image: sound5
   },
   {
     id: 's6',
     category: 'music',
     title: 'Sound System Array',
     description: 'High-fidelity line arrays and subwoofers for crystal audio',
-    image: 'https://images.unsplash.com/photo-1563841563604-0f7b27c5c1d5?auto=format&fit=crop&q=80&w=800'
+    image: sound6
   }
 ];
 
-/* ────────────────────────────────────────────────────────────────────────
-   SCROLL-FADE HOOK — fires once per card
-   ──────────────────────────────────────────────────────────────────────── */
-function useFadeIn() {
-  const ref = useRef(null);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          el.classList.add('gallery-card-visible');
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.12 }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
-  return ref;
-}
+const textAnims = {
+  h1: {
+    hidden: { opacity: 0, y: 30 },
+    visible: { 
+      opacity: 1, 
+      y: 0, 
+      transition: { duration: 0.9, ease: [0.16, 1, 0.3, 1] } 
+    }
+  },
+  h2: {
+    hidden: { opacity: 0, y: 35, filter: "blur(4px)" },
+    visible: { 
+      opacity: 1, 
+      y: 0, 
+      filter: "blur(0px)",
+      transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } 
+    }
+  },
+  h3: {
+    hidden: { opacity: 0, scale: 0.94 },
+    visible: { 
+      opacity: 1, 
+      scale: 1, 
+      transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } 
+    }
+  },
+  p: {
+    hidden: { opacity: 0, y: 20 },
+    visible: { 
+      opacity: 0.9, 
+      y: 0, 
+      transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } 
+    }
+  },
+  label: {
+    hidden: { opacity: 0, letterSpacing: "0.5px" },
+    visible: { 
+      opacity: 1, 
+      letterSpacing: "2px", 
+      transition: { duration: 0.9, ease: [0.16, 1, 0.3, 1] } 
+    }
+  }
+};
 
-/* ────────────────────────────────────────────────────────────────────────
-   SINGLE GALLERY CARD
-   ──────────────────────────────────────────────────────────────────────── */
+/* ── SINGLE GALLERY CARD ── */
 const GalleryCard = ({ item, idx, onOpen }) => {
-  const ref = useFadeIn();
   const displayCategory = item.category === 'music' ? 'Sound & Stage' : item.category;
   return (
-    <div
-      ref={ref}
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.6, delay: (idx % 6) * 0.08, ease: "easeOut" }}
       className="col-lg-4 col-md-6 gallery-card-wrapper"
-      style={{ transitionDelay: `${(idx % 6) * 80}ms` }}
     >
       <div className="gallery-item-premium" onClick={() => onOpen(idx)}>
         <img
@@ -267,7 +326,7 @@ const GalleryCard = ({ item, idx, onOpen }) => {
           alt={item.title}
           loading="lazy"
           onError={(e) => {
-            e.target.src = 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&q=80&w=800';
+            e.target.src = wedding1;
           }}
         />
         <div className="gallery-overlay-premium">
@@ -277,13 +336,11 @@ const GalleryCard = ({ item, idx, onOpen }) => {
           <i className="bi bi-zoom-in text-white fs-4 mt-2"></i>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
-/* ────────────────────────────────────────────────────────────────────────
-   MAIN GALLERY PAGE
-   ──────────────────────────────────────────────────────────────────────── */
+/* ── MAIN GALLERY PAGE ── */
 const Gallery = () => {
   const [galleryItems, setGalleryItems] = useState([]);
   const [loading, setLoading]           = useState(true);
@@ -297,7 +354,18 @@ const Gallery = () => {
         const res = await fetch(`${apiUrl}/gallery`);
         if (!res.ok) throw new Error('API error');
         const data = await res.json();
-        setGalleryItems(data && data.length > 0 ? data : FALLBACK_ITEMS);
+        if (data && data.length > 0) {
+          const apiMapped = data.map((item, idx) => {
+            const matchedLocal = FALLBACK_ITEMS.find(f => f.title === item.title) || FALLBACK_ITEMS[idx % FALLBACK_ITEMS.length];
+            return {
+              ...item,
+              image: matchedLocal ? matchedLocal.image : wedding1
+            };
+          });
+          setGalleryItems(apiMapped);
+        } else {
+          setGalleryItems(FALLBACK_ITEMS);
+        }
       } catch {
         setGalleryItems(FALLBACK_ITEMS);
       } finally {
@@ -349,10 +417,23 @@ const Gallery = () => {
       {/* ── Page Header ── */}
       <header className="page-header">
         <div className="container">
-          <span className="text-gold text-uppercase fw-bold" style={{ fontSize: '0.8rem', letterSpacing: '2px' }}>
+          <motion.span 
+            variants={textAnims.label}
+            initial="hidden"
+            animate="visible"
+            className="text-gold text-uppercase fw-bold d-block" 
+            style={{ fontSize: '0.8rem', letterSpacing: '2px' }}
+          >
             Our Portfolio
-          </span>
-          <h1 className="display-4 text-white mt-2">Visual Masterpieces</h1>
+          </motion.span>
+          <motion.h1 
+            variants={textAnims.h1}
+            initial="hidden"
+            animate="visible"
+            className="display-4 text-white mt-2 shimmer-gold-text"
+          >
+            Visual Masterpieces
+          </motion.h1>
           <div className="gold-divider"></div>
         </div>
       </header>
@@ -360,15 +441,31 @@ const Gallery = () => {
       {/* ── Hero Gallery Image ── */}
       <div className="gallery-hero-wrapper">
         <img
-          src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&q=80&w=1600"
+          src={wedding1}
           alt="Luxury wedding decoration with elegant flowers and golden lights"
           className="gallery-hero-img"
         />
         <div className="gallery-hero-overlay">
-          <span className="text-gold text-uppercase fw-bold" style={{ fontSize: '0.85rem', letterSpacing: '3px' }}>Sri Durga Events</span>
-          <h2 className="text-white mt-2" style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(1.6rem, 4vw, 3rem)' }}>
+          <motion.span 
+            variants={textAnims.label}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="text-gold text-uppercase fw-bold d-block" 
+            style={{ fontSize: '0.85rem', letterSpacing: '3px' }}
+          >
+            Sri Durga Events
+          </motion.span>
+          <motion.h2 
+            variants={textAnims.h2}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="text-white mt-2" 
+            style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(1.6rem, 4vw, 3rem)' }}
+          >
             Where Every Moment Becomes a Masterpiece
-          </h2>
+          </motion.h2>
         </div>
       </div>
 
@@ -434,7 +531,7 @@ const Gallery = () => {
               alt={filteredItems[lightbox.currentIdx].title}
               className="img-fluid rounded border border-gold"
               style={{ maxHeight: '70vh', boxShadow: '0 10px 40px rgba(0,0,0,0.7)', borderColor: 'rgba(212,175,55,0.35) !important' }}
-              onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&q=80&w=800'; }}
+              onError={(e) => { e.target.src = wedding1; }}
             />
             <h4 className="text-white mt-4 mb-1">{filteredItems[lightbox.currentIdx].title}</h4>
             <span className="text-uppercase fw-bold" style={{ fontSize: '0.75rem', letterSpacing: '1px', color: 'rgba(212,175,55,0.85)' }}>

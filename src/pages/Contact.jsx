@@ -1,31 +1,50 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import Toast from '../components/Toast';
 
-/* ────────────────────────────────────────────────────────────────────────
-   SCROLL REVEAL VIEWPORT HOOK
-   ──────────────────────────────────────────────────────────────────────── */
-function useFadeInView() {
-  const ref = useRef(null);
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setVisible(true);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.08 }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
-
-  return { ref, visible };
-}
+const textAnims = {
+  h1: {
+    hidden: { opacity: 0, y: 30 },
+    visible: { 
+      opacity: 1, 
+      y: 0, 
+      transition: { duration: 0.9, ease: [0.16, 1, 0.3, 1] } 
+    }
+  },
+  h2: {
+    hidden: { opacity: 0, y: 35, filter: "blur(4px)" },
+    visible: { 
+      opacity: 1, 
+      y: 0, 
+      filter: "blur(0px)",
+      transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } 
+    }
+  },
+  h3: {
+    hidden: { opacity: 0, scale: 0.94 },
+    visible: { 
+      opacity: 1, 
+      scale: 1, 
+      transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } 
+    }
+  },
+  p: {
+    hidden: { opacity: 0, y: 20 },
+    visible: { 
+      opacity: 0.9, 
+      y: 0, 
+      transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } 
+    }
+  },
+  label: {
+    hidden: { opacity: 0, letterSpacing: "0.5px" },
+    visible: { 
+      opacity: 1, 
+      letterSpacing: "2px", 
+      transition: { duration: 0.9, ease: [0.16, 1, 0.3, 1] } 
+    }
+  }
+};
 
 const Contact = () => {
   const contactCards = [
@@ -59,7 +78,6 @@ const Contact = () => {
     }
   ];
 
-  const cardsReveal = useFadeInView();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -82,7 +100,6 @@ const Contact = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const { name, email, message } = formData;
 
     if (!name || !email || !message) {
@@ -123,10 +140,23 @@ const Contact = () => {
       {/* Header */}
       <header className="page-header">
         <div className="container">
-          <span className="text-uppercase fw-bold" style={{ fontSize: '0.8rem', letterSpacing: '2px', color: '#FFFFFF' }}>
+          <motion.span 
+            variants={textAnims.label}
+            initial="hidden"
+            animate="visible"
+            className="text-uppercase fw-bold d-block" 
+            style={{ fontSize: '0.8rem', color: '#FFFFFF' }}
+          >
             Get in Touch
-          </span>
-          <h1 className="display-4 text-white mt-2">Contact Planners</h1>
+          </motion.span>
+          <motion.h1 
+            variants={textAnims.h1}
+            initial="hidden"
+            animate="visible"
+            className="display-4 text-white mt-2 shimmer-gold-text"
+          >
+            Contact Planners
+          </motion.h1>
           <div className="gold-divider"></div>
         </div>
       </header>
@@ -138,12 +168,50 @@ const Contact = () => {
             
             {/* Contact Information & Map */}
             <div className="col-lg-5">
-              <span className="text-uppercase fw-bold" style={{ fontSize: '0.8rem', letterSpacing: '2px', color: '#FFFFFF' }}>Office Desk</span>
-              <h2 className="text-white mt-2 mb-4" style={{ fontFamily: "'Playfair Display', serif" }}>Headquarters</h2>
+              <motion.span 
+                variants={textAnims.label}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                className="text-uppercase fw-bold d-block" 
+                style={{ fontSize: '0.8rem', color: '#FFFFFF' }}
+              >
+                Office Desk
+              </motion.span>
+              <motion.h2 
+                variants={textAnims.h2}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                className="text-white mt-2 mb-4" 
+                style={{ fontFamily: "'Playfair Display', serif" }}
+              >
+                Headquarters
+              </motion.h2>
               <div className="gold-divider-start mb-4"></div>
 
-              <div className="d-flex flex-column gap-4 mb-5">
-                <div className="d-flex align-items-start gap-3">
+              {/* Contact Info Items Fading in Sequentially */}
+              <motion.div 
+                variants={{
+                  hidden: {},
+                  visible: {
+                    transition: {
+                      staggerChildren: 0.15
+                    }
+                  }
+                }}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                className="d-flex flex-column gap-4 mb-5"
+              >
+                <motion.div 
+                  variants={{
+                    hidden: { opacity: 0, x: -20 },
+                    visible: { opacity: 1, x: 0, transition: { duration: 0.6, ease: "easeOut" } }
+                  }}
+                  className="d-flex align-items-start gap-3"
+                >
                   <div className="bg-luxury-navy-light p-3 border border-gold rounded" style={{ color: 'var(--luxury-gold)' }}>
                     <i className="bi bi-geo-alt-fill fs-4"></i>
                   </div>
@@ -151,9 +219,15 @@ const Contact = () => {
                     <h5 className="text-white mb-1">Corporate Address</h5>
                     <p className="text-white-50 small mb-0">52, West Street, Kovilpathu, Kalakad - 627501</p>
                   </div>
-                </div>
+                </motion.div>
 
-                <div className="d-flex align-items-start gap-3">
+                <motion.div 
+                  variants={{
+                    hidden: { opacity: 0, x: -20 },
+                    visible: { opacity: 1, x: 0, transition: { duration: 0.6, ease: "easeOut" } }
+                  }}
+                  className="d-flex align-items-start gap-3"
+                >
                   <div className="bg-luxury-navy-light p-3 border border-gold rounded" style={{ color: 'var(--luxury-gold)' }}>
                     <i className="bi bi-telephone-fill fs-4"></i>
                   </div>
@@ -161,9 +235,15 @@ const Contact = () => {
                     <h5 className="text-white mb-1">Phone Line</h5>
                     <p className="text-white-50 small mb-0">+91 73589 51381</p>
                   </div>
-                </div>
+                </motion.div>
 
-                <div className="d-flex align-items-start gap-3">
+                <motion.div 
+                  variants={{
+                    hidden: { opacity: 0, x: -20 },
+                    visible: { opacity: 1, x: 0, transition: { duration: 0.6, ease: "easeOut" } }
+                  }}
+                  className="d-flex align-items-start gap-3"
+                >
                   <div className="bg-luxury-navy-light p-3 border border-gold rounded" style={{ color: 'var(--luxury-gold)' }}>
                     <i className="bi bi-envelope-fill fs-4"></i>
                   </div>
@@ -171,8 +251,8 @@ const Contact = () => {
                     <h5 className="text-white mb-1">Electronic Mail</h5>
                     <p className="text-white-50 small mb-0">sridurgaevents@gmail.com</p>
                   </div>
-                </div>
-              </div>
+                </motion.div>
+              </motion.div>
 
               {/* Embedded Google Map */}
               <div
@@ -196,16 +276,30 @@ const Contact = () => {
                   referrerPolicy="no-referrer-when-downgrade"
                 ></iframe>
               </div>
-
             </div>
 
             {/* Contact Form */}
             <div className="col-lg-7">
               <div className="luxury-card p-5">
-                <h3 className="text-white mb-4" style={{ fontFamily: "'Playfair Display', serif" }}>Send a Message</h3>
-                <p className="text-white mb-5 small">
+                <motion.h3 
+                  variants={textAnims.h3}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true }}
+                  className="text-white mb-4" 
+                  style={{ fontFamily: "'Playfair Display', serif" }}
+                >
+                  Send a Message
+                </motion.h3>
+                <motion.p 
+                  variants={textAnims.p}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true }}
+                  className="text-white mb-5 small"
+                >
                   Inquire about dates, ask specific planning questions, or submit feedback. Our concierge desk will respond within 12 hours.
-                </p>
+                </motion.p>
 
                 <form onSubmit={handleSubmit}>
                   <div className="row g-4 mb-4">
@@ -260,13 +354,15 @@ const Contact = () => {
                     ></textarea>
                   </div>
 
-                  <button
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    transition={{ duration: 0.3 }}
                     type="submit"
                     disabled={loading}
                     className="btn btn-gold w-100 py-3 text-uppercase tracking-widest fw-bold"
                   >
                     {loading ? 'Sending Message...' : 'Submit Message'}
-                  </button>
+                  </motion.button>
                 </form>
               </div>
             </div>
@@ -276,24 +372,53 @@ const Contact = () => {
       </section>
 
       {/* Connect With Us Section */}
-      <section ref={cardsReveal.ref} className="py-5 bg-luxury-navy-light border-top border-gold" style={{ borderColor: 'rgba(212, 175, 55, 0.15) !important' }}>
+      <section className="py-5 bg-luxury-navy-light border-top border-gold" style={{ borderColor: 'rgba(212, 175, 55, 0.15) !important' }}>
         <div className="container py-4">
           <div className="text-center mb-5">
-            <span className="text-gold text-uppercase fw-bold" style={{ fontSize: '0.8rem', letterSpacing: '2px' }}>Stay Connected</span>
-            <h2 className="text-white mt-2" style={{ fontFamily: "'Playfair Display', serif" }}>Connect With Us</h2>
+            <motion.span 
+              variants={textAnims.label}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              className="text-gold text-uppercase fw-bold d-block" 
+              style={{ fontSize: '0.8rem' }}
+            >
+              Stay Connected
+            </motion.span>
+            <motion.h2 
+              variants={textAnims.h2}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              className="text-white mt-2" 
+              style={{ fontFamily: "'Playfair Display', serif" }}
+            >
+              Connect With Us
+            </motion.h2>
             <div className="gold-divider mx-auto"></div>
           </div>
 
-          <div className="row g-4 justify-content-center">
+          <motion.div 
+            variants={{
+              hidden: {},
+              visible: {
+                transition: {
+                  staggerChildren: 0.15
+                }
+              }
+            }}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="row g-4 justify-content-center"
+          >
             {contactCards.map((card, idx) => (
-              <div 
+              <motion.div 
                 key={idx} 
                 className="col-lg-3 col-sm-6"
-                style={{
-                  opacity: cardsReveal.visible ? 1 : 0,
-                  transform: cardsReveal.visible ? 'translateY(0)' : 'translateY(40px)',
-                  transition: 'opacity 0.8s cubic-bezier(0.165, 0.84, 0.44, 1), transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1)',
-                  transitionDelay: cardsReveal.visible ? `${idx * 120}ms` : '0ms'
+                variants={{
+                  hidden: { opacity: 0, y: 30 },
+                  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
                 }}
               >
                 <a 
@@ -309,9 +434,9 @@ const Contact = () => {
                   <p className="contact-detail">{card.detail}</p>
                   <span className="contact-name">{card.name}</span>
                 </a>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
@@ -334,17 +459,8 @@ const Contact = () => {
           onClose={() => setToast({ ...toast, show: false })}
         />
       )}
-
-      {/* Animation Styles */}
-      <style>{`
-        @keyframes bounce {
-          0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-10px); }
-        }
-      `}</style>
     </div>
   );
 };
 
 export default Contact;
-

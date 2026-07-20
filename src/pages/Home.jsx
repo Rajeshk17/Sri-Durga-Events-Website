@@ -1,22 +1,38 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import weddingBlueLandscape from '../assets/images/wedding_blue_landscape.jpg';
-import weddingPinkLandscape from '../assets/images/wedding_pink_landscape.jpg';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import weddingBlueLandscape from '../assets/images/hero/wedding_blue_landscape.jpg';
+import weddingPinkLandscape from '../assets/images/hero/wedding_pink_landscape.jpg';
+import heroSlide1 from '../assets/images/home/hero_slide_1.jpg';
+import heroSlide2 from '../assets/images/home/hero_slide_2.jpg';
+import birthdayFeatured from '../assets/images/home/birthday_featured.jpg';
+import whyChooseUs1 from '../assets/images/why-choose-us/why-choose-us-1.jpeg';
+import whyChooseUs2 from '../assets/images/why-choose-us/why-choose-us-2.jpeg';
+import whyChooseUs3 from '../assets/images/why-choose-us/why-choose-us-3.jpeg';
+import highlight1 from '../assets/images/gallery/highlight_1.jpeg';
+import highlight2 from '../assets/images/gallery/highlight_2.jpeg';
+import highlight3 from '../assets/images/gallery/highlight_3.jpeg';
+import highlight4 from '../assets/images/gallery/highlight_4.jpeg';
+import highlight5 from '../assets/images/gallery/highlight_5.jpeg';
+import highlight6 from '../assets/images/gallery/highlight_6.jpeg';
+import weddingServiceImg from '../assets/images/services/wedding.jpeg';
+import babyShowerServiceImg from '../assets/images/services/baby-shower.jpeg';
+import corporateServiceImg from '../assets/images/services/corporate.jpeg';
+import cateringServiceImg from '../assets/images/services/Catering.jpg';
+import djServiceImg from '../assets/images/services/dj.jpeg';
 
 const SERVICE_IMAGE_MAPPING = {
-  'Wedding Events': 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=800',
-  'Birthday Parties': 'https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&q=80&w=800',
-  'Baby Shower': 'https://images.unsplash.com/photo-1596464716127-f2a82984de30?auto=format&fit=crop&q=80&w=800',
-  'Anniversary Celebrations': 'https://images.unsplash.com/photo-1513278974582-3e1b4a4fa21e?auto=format&fit=crop&q=80&w=800',
-  'Corporate Events': 'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&q=80&w=800',
-  'Catering Services': 'https://images.unsplash.com/photo-1555244162-803834f70033?auto=format&fit=crop&q=80&w=800',
-  'Photography & Videography': 'https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&q=80&w=800',
-  'DJ & Sound Systems': 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&q=80&w=800'
+  'Wedding Events': weddingServiceImg,
+  'Birthday Parties': birthdayFeatured,
+  'Baby Shower': babyShowerServiceImg,
+  'Anniversary Celebrations': weddingServiceImg,
+  'Corporate Events': corporateServiceImg,
+  'Catering Services': cateringServiceImg,
+  'Photography & Videography': weddingServiceImg,
+  'DJ & Sound Systems': djServiceImg
 };
 
-/* ────────────────────────────────────────────────────────────────────────
-   FADE UP/IN VIEWPORT HOOK
-   ──────────────────────────────────────────────────────────────────────── */
+/* ── FADE UP/IN VIEWPORT HOOK ── */
 function useFadeInView() {
   const ref = useRef(null);
   const [visible, setVisible] = useState(false);
@@ -40,14 +56,55 @@ function useFadeInView() {
   return { ref, visible };
 }
 
-/* ────────────────────────────────────────────────────────────────────────
-   MAIN HOME COMPONENT
-   ──────────────────────────────────────────────────────────────────────── */
+const textAnims = {
+  h1: {
+    hidden: { opacity: 0, y: 30 },
+    visible: { 
+      opacity: 1, 
+      y: 0, 
+      transition: { duration: 1.0, ease: [0.16, 1, 0.3, 1] } 
+    }
+  },
+  h2: {
+    hidden: { opacity: 0, y: 35, filter: "blur(4px)" },
+    visible: { 
+      opacity: 1, 
+      y: 0, 
+      filter: "blur(0px)",
+      transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } 
+    }
+  },
+  h3: {
+    hidden: { opacity: 0, scale: 0.94 },
+    visible: { 
+      opacity: 1, 
+      scale: 1, 
+      transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } 
+    }
+  },
+  p: {
+    hidden: { opacity: 0, y: 20 },
+    visible: { 
+      opacity: 0.9, 
+      y: 0, 
+      transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } 
+    }
+  },
+  label: {
+    hidden: { opacity: 0, letterSpacing: "1px" },
+    visible: { 
+      opacity: 1, 
+      letterSpacing: "3px", 
+      transition: { duration: 1.0, ease: [0.16, 1, 0.3, 1] } 
+    }
+  }
+};
+
+/* ── MAIN HOME COMPONENT ── */
 const Home = () => {
-  // 3 premium landscape (16:9) luxury event images for slideshow
   const heroBgs = [
-    'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=1920', // Grand floral wedding stage setup
-    'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&q=80&w=1920'  // Premium luxury wedding hall setup with chandeliers
+    heroSlide1,
+    heroSlide2
   ];
 
   const [currentBgIdx, setCurrentBgIdx] = useState(0);
@@ -61,19 +118,16 @@ const Home = () => {
     });
   }, []);
 
-  // Interval autoplay timer resetting whenever slide index changes
+  // Interval autoplay timer
   useEffect(() => {
     const interval = setInterval(() => {
       setPrevBgIdx(currentBgIdx);
       setCurrentBgIdx((prev) => (prev + 1) % heroBgs.length);
-    }, 6000); // 6 seconds visible duration
+    }, 6000);
 
     return () => clearInterval(interval);
   }, [currentBgIdx]);
 
-
-
-  // Preview items matching the updated list of services (plain titles, no emojis)
   const featuredServices = [
     {
       title: 'Wedding Events',
@@ -117,7 +171,7 @@ const Home = () => {
 
   const [activeTestimonialIdx, setActiveTestimonialIdx] = useState(0);
 
-  // Auto-slide testimonials every 7.5 seconds
+  // Auto-slide testimonials
   useEffect(() => {
     const interval = setInterval(() => {
       setActiveTestimonialIdx((prev) => (prev + 1) % testimonials.length);
@@ -125,45 +179,76 @@ const Home = () => {
     return () => clearInterval(interval);
   }, [testimonials.length]);
 
-  // Redesigned premium gallery cards with high-quality luxury event images (6 equal size items)
   const redesignedGallery = [
     {
       title: 'Royal Wedding Decoration',
       description: 'Exquisite mandap and banquet designs with fresh exotic floral arches.',
-      image: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=800'
+      image: highlight1
     },
     {
       title: 'Bride & Groom Stage',
       description: 'Elegant golden themed couple stages with crystal chandelier arrays.',
-      image: 'https://images.unsplash.com/photo-1604014237800-1c9102c219da?auto=format&fit=crop&q=80&w=800'
+      image: highlight2
     },
     {
       title: 'Corporate Conference',
       description: 'Professional high-end sound coordinates and executive layouts.',
-      image: 'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&q=80&w=800'
+      image: highlight3
     },
     {
       title: 'Birthday Celebration',
       description: 'Sophisticated balloon structures and neon photobooths.',
-      image: 'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&q=80&w=800'
+      image: highlight4
     },
     {
       title: 'Premium Catering Setup',
       description: 'Delectable multi-cuisine presentation served with fine dining setups.',
-      image: 'https://images.unsplash.com/photo-1555244162-803834f70033?auto=format&fit=crop&q=80&w=800'
+      image: highlight5
     },
     {
       title: 'DJ & Stage Lighting',
       description: 'Club acoustics, smoke effects, and intelligent strobe light systems.',
-      image: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&q=80&w=800'
+      image: highlight6
     }
   ];
 
   // Observers for scroll reveal stagger animation
   const servicesReveal = useFadeInView();
-  const whyChooseReveal = useFadeInView();
   const testimonialsReveal = useFadeInView();
   const galleryReveal = useFadeInView();
+  const containerRef = useRef(null);
+
+  const [frontIdx, setFrontIdx] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 575);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Scroll Parallax Hooks for the Stacked Cards
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"]
+  });
+
+  const parallaxYBack = useTransform(scrollYProgress, [0, 1], [-30, 30]);
+  const parallaxYMiddle = useTransform(scrollYProgress, [0, 1], [-10, 10]);
+  const parallaxYFront = useTransform(scrollYProgress, [0, 1], [-45, 45]);
+
+  // Auto rotating interval
+  useEffect(() => {
+    if (isHovered || isMobile) return;
+    const interval = setInterval(() => {
+      setFrontIdx(prev => (prev + 1) % 3);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [isHovered, isMobile]);
 
   return (
     <div className="animate-fade-in">
@@ -187,29 +272,53 @@ const Home = () => {
         {/* Animated Dark Overlay with Soft Luxury Glow */}
         <div className="hero-overlay-animated"></div>
 
-
-
         <div className="container hero-content-wrapper">
           <div className="row">
             <div className="col-lg-8 text-start">
               <div className="hero-anim-title">
-                <span className="text-white text-uppercase fw-bold mb-3 d-inline-block" style={{ fontSize: '0.85rem', letterSpacing: '3px' }}>
+                <motion.span 
+                  variants={textAnims.label}
+                  initial="hidden"
+                  animate="visible"
+                  className="text-white text-uppercase fw-bold mb-3 d-inline-block" 
+                  style={{ fontSize: '0.85rem' }}
+                >
                   Exquisite Event Planners
-                </span>
-                <h1 className="display-3 text-white fw-bold mb-3" style={{ lineHeight: 1.15 }}>
+                </motion.span>
+                <motion.h1 
+                  variants={textAnims.h1}
+                  initial="hidden"
+                  animate="visible"
+                  className="display-3 text-white fw-bold mb-3 shimmer-gold-text" 
+                  style={{ lineHeight: 1.15 }}
+                >
                   Make Every Event <br />
                   <span className="text-gold">Unforgettable</span>
-                </h1>
+                </motion.h1>
               </div>
               <div className="hero-anim-desc">
-                <p className="lead text-white mb-5" style={{ fontSize: '1.1rem', maxWidth: '600px', opacity: 0.9 }}>
+                <motion.p 
+                  variants={textAnims.p}
+                  initial="hidden"
+                  animate="visible"
+                  className="lead text-white mb-5" 
+                  style={{ fontSize: '1.1rem', maxWidth: '600px', opacity: 0.9 }}
+                >
                   Sri Durga Events curates and designs premium, luxury events tailored to your finest desires. Our dedication under Mariyappan translates your visions into legendary celebrations.
-                </p>
+                </motion.p>
               </div>
               <div className="hero-anim-btns">
                 <div className="d-flex flex-wrap gap-3">
-                  <a href="tel:+917358951381" className="btn btn-gold px-4 py-3">Book Now</a>
-                  <Link to="/services" className="btn btn-luxury-outline px-4 py-3">View Services</Link>
+                  <motion.a 
+                    whileHover={{ scale: 1.05 }}
+                    href="tel:+917358951381" 
+                    className="btn btn-gold px-4 py-3"
+                  >
+                    Book Now
+                  </motion.a>
+                  <motion.div whileHover={{ scale: 1.05 }}>
+                    <Link to="/services" className="btn btn-luxury-outline px-4 py-3">View Services</Link>
+                  </motion.div>
                 </div>
               </div>
             </div>
@@ -218,105 +327,360 @@ const Home = () => {
       </header>
 
       {/* Featured Services Section */}
-      <section ref={servicesReveal.ref} className="py-5 bg-luxury-navy">
+      <section className="py-5 bg-luxury-navy">
         <div className="container py-5">
           <div className="text-center mb-5">
-            <span className="text-white text-uppercase fw-bold" style={{ fontSize: '0.8rem', letterSpacing: '2px' }}>
+            <motion.span 
+              variants={textAnims.label}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              className="text-white text-uppercase fw-bold d-block" 
+              style={{ fontSize: '0.8rem', letterSpacing: '2px' }}
+            >
               Our Specialities
-            </span>
-            <h2 className="display-5 text-gold mt-2">Featured Services</h2>
+            </motion.span>
+            <motion.h2 
+              variants={textAnims.h2}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              className="display-5 text-gold mt-2 shimmer-gold-text"
+            >
+              Featured Services
+            </motion.h2>
             <div className="gold-divider"></div>
           </div>
 
-          <div className="row g-4">
-            {featuredServices.map((service, index) => (
-              <div key={index} className="col-md-4">
-                <div 
-                  className="card h-100 luxury-card featured-service-card"
-                  style={{
-                    opacity: servicesReveal.visible ? 1 : 0,
-                    transform: servicesReveal.visible ? 'translateY(0)' : 'translateY(40px)',
-                    transition: 'opacity 0.8s cubic-bezier(0.165, 0.84, 0.44, 1), transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1)',
-                    transitionDelay: servicesReveal.visible ? `${index * 150}ms` : '0ms',
-                    borderColor: 'rgba(212, 175, 55, 0.15)'
-                  }}
-                >
-                  <div className="luxury-card-img-wrapper" style={{ height: '220px' }}>
-                    <img 
-                      src={service.image} 
-                      alt={service.title} 
-                      className="card-img-top w-100 h-100 object-fit-cover luxury-card-img" 
-                      onError={(e) => {
-                        e.target.src = SERVICE_IMAGE_MAPPING[service.title];
-                      }}
-                    />
-                  </div>
-                  <div className="card-body p-4 d-flex flex-column">
-                    <h4 className="card-title mb-3 text-gold">{service.title}</h4>
-                    <p className="card-text mb-4" style={{ fontSize: '0.9rem', color: '#FFFFFF' }}>{service.description}</p>
-                    <a href={`https://wa.me/917358951381?text=Hello%20Sri%20Durga%20Events,%20I%20would%20like%20to%20inquire%20about%20${encodeURIComponent(service.title)}.%20Please%20share%20the%20details.`} target="_blank" rel="noopener noreferrer" className="text-white text-decoration-none mt-auto fw-bold hover-gold" style={{ fontSize: '0.85rem', transition: 'color 0.2s' }}>
-                      INQUIRE SERVICE <i className="bi bi-arrow-right ms-1"></i>
-                    </a>
-                  </div>
+          <div className="row g-4 align-items-stretch">
+            {featuredServices.map((service, index) => {
+              const paragraphWords = service.description.split(" ");
+              return (
+                <div key={index} className="col-md-4 d-flex">
+                  <motion.div 
+                    custom={index}
+                    initial="hidden"
+                    whileInView="visible"
+                    whileHover="hover"
+                    viewport={{ once: true, amount: 0.15 }}
+                    variants={{
+                      hidden: { 
+                        opacity: 0, 
+                        y: 40, 
+                        scale: 0.96,
+                        borderColor: "rgba(212, 175, 55, 0.15)",
+                        boxShadow: "0 10px 30px rgba(0, 0, 0, 0.4)"
+                      },
+                      visible: (i) => ({
+                        opacity: 1,
+                        y: 0,
+                        scale: 1,
+                        borderColor: "rgba(212, 175, 55, 0.15)",
+                        boxShadow: "0 10px 30px rgba(0, 0, 0, 0.4)",
+                        transition: {
+                          duration: 0.8,
+                          ease: [0.16, 1, 0.3, 1],
+                          delay: i * 0.15
+                        }
+                      }),
+                      hover: {
+                        y: -12,
+                        borderColor: "rgba(212, 175, 55, 0.8)",
+                        boxShadow: "0 20px 40px rgba(212, 175, 55, 0.22), 0 0 15px rgba(212, 175, 55, 0.1)",
+                        transition: { duration: 0.4, ease: "easeInOut" }
+                      }
+                    }}
+                    style={{
+                      borderRadius: '16px',
+                      borderWidth: '1px',
+                      borderStyle: 'solid',
+                      overflow: 'hidden',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      width: '100%',
+                      background: 'var(--luxury-navy-light)'
+                    }}
+                    className="card luxury-card featured-service-card"
+                  >
+                    {/* Image */}
+                    <div className="luxury-card-img-wrapper" style={{ height: '280px', overflow: 'hidden', position: 'relative' }}>
+                      <motion.img 
+                        variants={{
+                          hidden: { scale: 1 },
+                          visible: { scale: 1 },
+                          hover: { scale: 1.05 }
+                        }}
+                        transition={{ duration: 0.5, ease: "easeInOut" }}
+                        src={service.image} 
+                        alt={service.title} 
+                        className="card-img-top w-100 h-100 object-fit-cover luxury-card-img" 
+                        loading="lazy" 
+                      />
+                    </div>
+
+                    {/* Content */}
+                    <div className="card-body p-4 text-center d-flex flex-column justify-content-center align-items-center flex-grow-1">
+                      <motion.h3 
+                        variants={{
+                          hidden: { opacity: 0, y: 15 },
+                          visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] } }
+                        }}
+                        className="text-gold mb-3"
+                        style={{ fontFamily: "'Playfair Display', serif", fontWeight: 600, fontSize: '1.35rem' }}
+                      >
+                        {service.title}
+                      </motion.h3>
+                      
+                      <motion.p 
+                        variants={{
+                          hidden: {},
+                          visible: { transition: { staggerChildren: 0.03 } }
+                        }}
+                        className="text-white mb-0" 
+                        style={{ fontSize: '0.9rem', lineHeight: '1.65', opacity: 0.85 }}
+                      >
+                        {paragraphWords.map((word, wordIdx) => (
+                          <motion.span
+                            key={wordIdx}
+                            variants={{
+                              hidden: { opacity: 0, y: 5 },
+                              visible: { opacity: 1, y: 0, transition: { duration: 0.4 } }
+                            }}
+                            style={{ display: 'inline-block', marginRight: '4px' }}
+                          >
+                            {word}
+                          </motion.span>
+                        ))}
+                      </motion.p>
+                    </div>
+                  </motion.div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
 
       {/* Why Choose Us Section */}
-      <section ref={whyChooseReveal.ref} className="py-5 bg-luxury-navy-light position-relative">
+      <section ref={containerRef} className="py-5 bg-luxury-navy-light position-relative">
         <div className="container py-5">
           <div className="row align-items-center g-5">
+            {/* LEFT SIDE (Stacked Overlapping Photo Cards) */}
             <div className="col-lg-6">
-              <div className="position-relative overflow-hidden rounded">
-                <img
-                  src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&q=80&w=800"
-                  alt="Luxury planning"
-                  className="img-fluid rounded shadow-lg border border-gold why-choose-img"
-                  style={{ 
-                    borderColor: 'rgba(212, 175, 55, 0.2) !important',
-                    transition: 'transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1)'
+              {isMobile ? (
+                /* Mobile: Stacked vertically with scroll reveal animations */
+                <div 
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '1.5rem',
+                    padding: '1rem 0',
+                    width: '100%',
+                    maxWidth: '320px',
+                    margin: '0 auto'
                   }}
-                />
-              </div>
+                >
+                  {[
+                   {
+  title: 'Corporate Event',
+  img: whyChooseUs3
+},
+{
+  title: 'Birthday Event',
+  img: whyChooseUs2
+},
+{
+  title: 'Wedding Event',
+  img: whyChooseUs1
+}
+                  ].map((card, idx) => (
+                    <motion.div
+                      key={idx}
+                      initial={{ opacity: 0, y: 30 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      whileHover={{ y: -6, scale: 1.02 }}
+                      transition={{ duration: 0.5, ease: "easeOut" }}
+                      style={{
+                        position: "relative",
+                        width: "100%",
+                        height: "200px",
+                        borderRadius: "20px",
+                        overflow: "hidden",
+                        border: "1px solid rgba(212, 175, 55, 0.35)",
+                        boxShadow: "0 10px 25px rgba(0,0,0,0.45)"
+                      }}
+                    >
+                      <img src={card.img} alt={card.title} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                      <div className="stacked-card-overlay">
+                        <span className="stacked-card-title">{card.title}</span>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              ) : (
+                /* Desktop & Tablet: Dynamic absolute overlapping stacked loop using Framer Motion */
+                <motion.div 
+                  className="stacked-cards-container"
+                  animate={{ y: [-6, 6] }}
+                  transition={{
+                    y: {
+                      duration: 5,
+                      ease: "easeInOut",
+                      repeat: Infinity,
+                      repeatType: "reverse"
+                    }
+                  }}
+                  onMouseEnter={() => setIsHovered(true)}
+                  onMouseLeave={() => setIsHovered(false)}
+                >
+                  {[
+                    {
+                      title: 'Corporate Event',
+                      img: whyChooseUs3
+                    },
+                    {
+                      title: 'Birthday Event',
+                      img: whyChooseUs2
+                    },
+                    {
+                      title: 'Wedding Event',
+                      img: whyChooseUs1
+                    }
+                  ].map((card, idx) => {
+                    let position = 'back';
+                    if (idx === frontIdx) {
+                      position = 'front';
+                    } else if (idx === (frontIdx + 1) % 3) {
+                      position = 'middle';
+                    }
+                    const cardParallaxY = position === 'front' ? parallaxYFront : (position === 'middle' ? parallaxYMiddle : parallaxYBack);
+                    return (
+                      <motion.div
+                        key={idx}
+                        style={{
+                          y: cardParallaxY,
+                          position: "absolute",
+                          width: "440px",
+                          height: "290px",
+                          zIndex: position === 'front' ? 30 : (position === 'middle' ? 20 : 10)
+                        }}
+                      >
+                        <motion.div
+                          custom={isHovered}
+                          variants={{
+                            back: (hovered) => ({
+                              x: hovered ? -120 : -50,
+                              y: hovered ? -70 : -45,
+                              scale: 0.88,
+                              rotate: hovered ? -14 : -7,
+                              opacity: 0.65,
+                              borderColor: "rgba(212, 175, 55, 0.25)",
+                              boxShadow: "0 12px 35px rgba(0,0,0,0.45)"
+                            }),
+                            middle: (hovered) => ({
+                              x: hovered ? 0 : 0,
+                              y: hovered ? -20 : 0,
+                              scale: 0.95,
+                              rotate: hovered ? 0 : 3,
+                              opacity: 0.85,
+                              borderColor: "rgba(212, 175, 55, 0.25)",
+                              boxShadow: "0 12px 35px rgba(0,0,0,0.45)"
+                            }),
+                            front: (hovered) => ({
+                              x: hovered ? 120 : 50,
+                              y: hovered ? 50 : 45,
+                              scale: hovered ? 1.05 : 1,
+                              rotate: hovered ? 6 : -3,
+                              opacity: 1,
+                              borderColor: hovered ? "rgba(212, 175, 55, 0.9)" : "rgba(212, 175, 55, 0.35)",
+                              boxShadow: hovered 
+                                ? "0 20px 45px rgba(212,175,55,0.22), 0 0 20px rgba(212,175,55,0.15)"
+                                : "0 15px 40px rgba(0,0,0,0.5)"
+                            })
+                          }}
+                          animate={position}
+                          transition={{
+                            duration: 1.5,
+                            ease: "easeInOut"
+                          }}
+                          style={{
+                            width: "100%",
+                            height: "100%",
+                            borderRadius: "20px",
+                            overflow: "hidden",
+                            borderWidth: "1px",
+                            borderStyle: "solid",
+                            position: "relative"
+                          }}
+                        >
+                          <motion.img 
+                            src={card.img} 
+                            alt={card.title} 
+                            style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                            animate={{ scale: isHovered && position === 'front' ? 1.05 : 1 }}
+                            transition={{ duration: 0.4 }}
+                          />
+                          <div className="stacked-card-overlay">
+                            <span className="stacked-card-title">{card.title}</span>
+                          </div>
+                        </motion.div>
+                      </motion.div>
+                    );
+                  })}
+                </motion.div>
+              )}
             </div>
-            <div className="col-lg-6">
-              <span 
+
+            {/* RIGHT SIDE (Content with Framer Motion timeline choreography) */}
+            <motion.div 
+              className="col-lg-6"
+              variants={{
+                hidden: {},
+                visible: {
+                  transition: {
+                    staggerChildren: 0.2,
+                    delayChildren: 0.1
+                  }
+                }
+              }}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.2 }}
+            >
+              <motion.span 
                 className="text-gold text-uppercase fw-bold" 
+                variants={textAnims.label}
                 style={{ 
                   fontSize: '0.8rem', 
-                  letterSpacing: '2px',
-                  opacity: whyChooseReveal.visible ? 1 : 0,
-                  transition: 'opacity 0.8s ease-in-out',
                   display: 'inline-block'
                 }}
               >
                 Signature Standards
-              </span>
-              <h2 
+              </motion.span>
+              <motion.h2 
                 className="display-5 text-white mt-2 mb-4"
-                style={{
-                  opacity: whyChooseReveal.visible ? 1 : 0,
-                  transform: whyChooseReveal.visible ? 'scale(1)' : 'scale(0.98)',
-                  transition: 'opacity 0.8s ease-in-out, transform 0.8s ease-in-out',
-                  transitionDelay: '100ms'
-                }}
+                variants={textAnims.h2}
+                style={{ fontFamily: "'Playfair Display', serif" }}
               >
                 Why Choose Sri Durga
-              </h2>
-              <div 
-                className="gold-divider-start"
+              </motion.h2>
+              <motion.div 
+                variants={{
+                  hidden: { scaleX: 0 },
+                  visible: { scaleX: 1, transition: { duration: 0.8, ease: "easeOut" } }
+                }}
                 style={{
-                  width: whyChooseReveal.visible ? '80px' : '0px',
-                  boxShadow: whyChooseReveal.visible ? '0 0 8px var(--luxury-gold)' : 'none',
-                  transition: 'width 0.8s ease-in-out, box-shadow 0.8s ease-in-out',
-                  transitionDelay: '200ms'
+                  width: '80px',
+                  height: '3px',
+                  background: 'var(--luxury-gold)',
+                  transformOrigin: 'left',
+                  boxShadow: '0 0 8px var(--luxury-gold)',
+                  marginBottom: '2rem'
                 }}
               />
               
-              <div className="d-flex flex-column gap-4 mt-4">
+              <div className="d-flex flex-column gap-4">
                 {[
                   {
                     title: 'Bespoke Concept Designs',
@@ -331,40 +695,44 @@ const Home = () => {
                     desc: 'We source only five-star caterers, high-end production crews, and premier entertainers across the industry.'
                   }
                 ].map((item, idx) => (
-                  <div 
+                  <motion.div 
                     key={idx} 
                     className="stat-box"
-                    style={{
-                      opacity: whyChooseReveal.visible ? 1 : 0,
-                      transition: 'opacity 0.8s ease-in-out',
-                      transitionDelay: whyChooseReveal.visible ? `${idx * 300}ms` : '0ms'
+                    variants={{
+                      hidden: { opacity: 0, x: 45 },
+                      visible: { 
+                        opacity: 1, 
+                        x: 0, 
+                        transition: { 
+                          duration: 0.8, 
+                          ease: "easeOut",
+                          staggerChildren: 0.2
+                        } 
+                      }
                     }}
+                    style={{ background: 'transparent', border: 'none', padding: 0 }}
                   >
-                    <h4 
-                      className="text-gold"
-                      style={{
-                        opacity: whyChooseReveal.visible ? 1 : 0,
-                        transition: 'opacity 0.8s ease-in-out',
-                        transitionDelay: whyChooseReveal.visible ? `${idx * 300}ms` : '0ms'
-                      }}
+                    <motion.h4 
+                      variants={textAnims.h3}
+                      className="text-gold" 
+                      style={{ fontFamily: "'Playfair Display', serif", fontWeight: 600 }}
                     >
                       {item.title}
-                    </h4>
-                    <p 
+                    </motion.h4>
+                    <motion.p 
                       className="mb-0 text-white" 
+                      variants={textAnims.p}
                       style={{ 
                         fontSize: '0.9rem',
-                        opacity: whyChooseReveal.visible ? 1 : 0,
-                        transition: 'opacity 0.8s ease-in-out',
-                        transitionDelay: whyChooseReveal.visible ? `${(idx * 300) + 200}ms` : '0ms'
+                        lineHeight: '1.7'
                       }}
                     >
                       {item.desc}
-                    </p>
-                  </div>
+                    </motion.p>
+                  </motion.div>
                 ))}
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
@@ -373,14 +741,29 @@ const Home = () => {
       <section ref={testimonialsReveal.ref} className="py-5 bg-luxury-navy testimonials-section-container">
         <div className="container py-5 position-relative">
           <div className="text-center mb-5">
-            <span className="text-gold text-uppercase fw-bold" style={{ fontSize: '0.8rem', letterSpacing: '2px' }}>Client Praise</span>
-            <h2 className="display-5 text-gold mt-2">Testimonials</h2>
+            <motion.span 
+              variants={textAnims.label}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              className="text-gold text-uppercase fw-bold d-block" 
+              style={{ fontSize: '0.8rem' }}
+            >
+              Client Praise
+            </motion.span>
+            <motion.h2 
+              variants={textAnims.h2}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              className="display-5 text-gold mt-2"
+            >
+              Testimonials
+            </motion.h2>
             <div className="gold-divider mx-auto"></div>
           </div>
 
           <div className="testimonials-slider-wrapper position-relative mx-auto" style={{ maxWidth: '800px' }}>
-
-            {/* Testimonials Slides Container */}
             <div className="testimonial-slides-container overflow-hidden" style={{ minHeight: '260px', position: 'relative' }}>
               {testimonials.map((t, idx) => {
                 const isActive = idx === activeTestimonialIdx;
@@ -403,12 +786,37 @@ const Home = () => {
                       <div className="quote-icon mb-4">
                         <i className="bi bi-quote text-gold fs-1 opacity-50"></i>
                       </div>
-                      <p className="card-text text-white mb-4 fs-5 italic" style={{ fontStyle: 'italic', lineHeight: '1.7' }}>
+                      <motion.p 
+                        variants={textAnims.p}
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true }}
+                        className="card-text text-white mb-4 fs-5 italic" 
+                        style={{ fontStyle: 'italic', lineHeight: '1.7' }}
+                      >
                         "{t.feedback}"
-                      </p>
+                      </motion.p>
                       <div className="mt-4">
-                        <h4 className="text-gold mb-1" style={{ fontFamily: "'Playfair Display', serif" }}>{t.name}</h4>
-                        <small className="text-white-50 text-uppercase fw-bold" style={{ fontSize: '0.8rem', letterSpacing: '2px' }}>{t.role}</small>
+                        <motion.h4 
+                          variants={textAnims.h3}
+                          initial="hidden"
+                          whileInView="visible"
+                          viewport={{ once: true }}
+                          className="text-gold mb-1" 
+                          style={{ fontFamily: "'Playfair Display', serif" }}
+                        >
+                          {t.name}
+                        </motion.h4>
+                        <motion.small 
+                          variants={textAnims.label}
+                          initial="hidden"
+                          whileInView="visible"
+                          viewport={{ once: true }}
+                          className="text-white-50 text-uppercase fw-bold d-block" 
+                          style={{ fontSize: '0.8rem' }}
+                        >
+                          {t.role}
+                        </motion.small>
                       </div>
                     </div>
                   </div>
@@ -423,10 +831,25 @@ const Home = () => {
       <section ref={galleryReveal.ref} className="py-5 bg-luxury-navy-light">
         <div className="container py-5">
           <div className="text-center mb-5">
-            <span className="text-gold text-uppercase fw-bold" style={{ fontSize: '0.8rem', letterSpacing: '2px' }}>
+            <motion.span 
+              variants={textAnims.label}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              className="text-gold text-uppercase fw-bold d-block" 
+              style={{ fontSize: '0.8rem' }}
+            >
               Visual Inspiration
-            </span>
-            <h2 className="display-5 text-gold mt-2">Gallery Highlights</h2>
+            </motion.span>
+            <motion.h2 
+              variants={textAnims.h2}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              className="display-5 text-gold mt-2"
+            >
+              Gallery Highlights
+            </motion.h2>
             <div className="gold-divider"></div>
           </div>
 
@@ -452,7 +875,9 @@ const Home = () => {
           </div>
 
           <div className="text-center mt-5">
-            <Link to="/gallery" className="btn btn-luxury-outline px-4 py-3">Explore Full Gallery</Link>
+            <motion.div whileHover={{ scale: 1.05 }} style={{ display: 'inline-block' }}>
+              <Link to="/gallery" className="btn btn-luxury-outline px-4 py-3">Explore Full Gallery</Link>
+            </motion.div>
           </div>
         </div>
       </section>
@@ -460,13 +885,38 @@ const Home = () => {
       {/* Contact CTA Section */}
       <section className="py-5 text-center bg-luxury-navy position-relative border-top border-gold" style={{ borderColor: 'rgba(212, 175, 55, 0.15) !important' }}>
         <div className="container py-5">
-          <h2 className="display-4 text-gold mb-3">Plan Your Masterpiece</h2>
-          <p className="text-white mx-auto mb-5" style={{ maxWidth: '600px', fontSize: '1.05rem', opacity: 0.95 }}>
+          <motion.h2 
+            variants={textAnims.h2}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="display-4 text-gold mb-3"
+          >
+            Plan Your Masterpiece
+          </motion.h2>
+          <motion.p 
+            variants={textAnims.p}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="text-white mx-auto mb-5" 
+            style={{ maxWidth: '600px', fontSize: '1.05rem', opacity: 0.95 }}
+          >
             Ready to design an elite celebration? Contact our planning consultants and receive a pre-event blueprint draft.
-          </p>
+          </motion.p>
           <div className="d-flex justify-content-center gap-3">
-            <a href="https://wa.me/917358951381?text=Hello%20Sri%20Durga%20Events!%20I%20am%20interested%20in%20booking%20an%20event.%20Please%20share%20the%20details%20and%20pricing." target="_blank" rel="noopener noreferrer" className="btn btn-luxury-outline px-4 py-3">Book Consultation</a>
-            <Link to="/contact" className="btn btn-gold px-4 py-3">Send Message</Link>
+            <motion.a 
+              whileHover={{ scale: 1.05 }}
+              href="https://wa.me/917358951381?text=Hello%20Sri%20Durga%20Events!%20I%20am%20interested%20in%20booking%20an%20event.%20Please%20share%20the%20details%20and%20pricing." 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="btn btn-luxury-outline px-4 py-3"
+            >
+              Book Consultation
+            </motion.a>
+            <motion.div whileHover={{ scale: 1.05 }}>
+              <Link to="/contact" className="btn btn-gold px-4 py-3">Send Message</Link>
+            </motion.div>
           </div>
         </div>
       </section>
