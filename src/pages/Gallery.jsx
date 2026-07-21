@@ -3,44 +3,44 @@ import { motion } from 'framer-motion';
 import LoadingSpinner from '../components/LoadingSpinner';
 
 // Weddings
-import wedding1 from '../assets/images/gallery/weddings/wedding_1.jpeg';
-import wedding2 from '../assets/images/gallery/weddings/wedding_2.jpeg';
-import wedding3 from '../assets/images/gallery/weddings/wedding_3.jpeg';
-import wedding4 from '../assets/images/gallery/weddings/wedding_4.jpeg';
-import wedding5 from '../assets/images/gallery/weddings/wedding_5.jpeg';
-import wedding6 from '../assets/images/gallery/weddings/wedding_6.jpeg';
+import wedding1 from '../assets/images/gallery/Weddings/wedding_1.jpeg';
+import wedding2 from '../assets/images/gallery/Weddings/wedding_2.jpeg';
+import wedding3 from '../assets/images/gallery/Weddings/wedding_3.jpeg';
+import wedding4 from '../assets/images/gallery/Weddings/wedding_4.jpeg';
+import wedding5 from '../assets/images/gallery/Weddings/wedding_5.jpeg';
+import wedding6 from '../assets/images/gallery/Weddings/wedding_6.jpeg';
 
 // Corporate
-import corporate1 from '../assets/images/gallery/corporate/corporate_1.jpeg';
-import corporate2 from '../assets/images/gallery/corporate/corporate_2.jpeg';
-import corporate3 from '../assets/images/gallery/corporate/corporate_3.jpeg';
-import corporate4 from '../assets/images/gallery/corporate/corporate_4.jpeg';
-import corporate5 from '../assets/images/gallery/corporate/corporate_5.jpeg';
-import corporate6 from '../assets/images/gallery/corporate/corporate_6.jpeg';
+import corporate1 from '../assets/images/gallery/Corporate/corporate_1.jpeg';
+import corporate2 from '../assets/images/gallery/Corporate/corporate_2.jpeg';
+import corporate3 from '../assets/images/gallery/Corporate/corporate_3.jpeg';
+import corporate4 from '../assets/images/gallery/Corporate/corporate_4.jpeg';
+import corporate5 from '../assets/images/gallery/Corporate/corporate_5.jpeg';
+import corporate6 from '../assets/images/gallery/Corporate/corporate_6.jpeg';
 
 // Birthdays
-import birthday1 from '../assets/images/gallery/birthday/birthday_1.jpeg';
-import birthday2 from '../assets/images/gallery/birthday/birthday_2.jpeg';
-import birthday3 from '../assets/images/gallery/birthday/birthday_3.jpeg';
-import birthday4 from '../assets/images/gallery/birthday/birthday_4.jpeg';
-import birthday5 from '../assets/images/gallery/birthday/birthday_5.jpeg';
-import birthday6 from '../assets/images/gallery/birthday/birthday_6.jpeg';
+import birthday1 from '../assets/images/gallery/Birthday/birthday_1.jpeg';
+import birthday2 from '../assets/images/gallery/Birthday/birthday_2.jpeg';
+import birthday3 from '../assets/images/gallery/Birthday/birthday_3.jpeg';
+import birthday4 from '../assets/images/gallery/Birthday/birthday_4.jpeg';
+import birthday5 from '../assets/images/gallery/Birthday/birthday_5.jpeg';
+import birthday6 from '../assets/images/gallery/Birthday/birthday_6.jpeg';
 
 // Catering
-import catering1 from '../assets/images/gallery/catering/catering_1.jpeg';
-import catering2 from '../assets/images/gallery/catering/catering_2.jpeg';
-import catering3 from '../assets/images/gallery/catering/catering_3.jpeg';
-import catering4 from '../assets/images/gallery/catering/catering_4.jpeg';
-import catering5 from '../assets/images/gallery/catering/catering_5.jpeg';
-import catering6 from '../assets/images/gallery/catering/catering_6.jpeg';
+import catering1 from '../assets/images/gallery/Catering/catering_1.jpeg';
+import catering2 from '../assets/images/gallery/Catering/catering_2.jpeg';
+import catering3 from '../assets/images/gallery/Catering/catering_3.jpeg';
+import catering4 from '../assets/images/gallery/Catering/catering_4.jpeg';
+import catering5 from '../assets/images/gallery/Catering/catering_5.jpeg';
+import catering6 from '../assets/images/gallery/Catering/catering_6.jpeg';
 
 // Sound & Stage
-import sound1 from '../assets/images/gallery/sound-stage/sound_1.jpeg';
-import sound2 from '../assets/images/gallery/sound-stage/sound_2.jpeg';
-import sound3 from '../assets/images/gallery/sound-stage/sound_3.jpeg';
-import sound4 from '../assets/images/gallery/sound-stage/sound_4.jpeg';
-import sound5 from '../assets/images/gallery/sound-stage/sound_5.jpeg';
-import sound6 from '../assets/images/gallery/sound-stage/sound_6.jpeg';
+import sound1 from '../assets/images/gallery/Sound-Stage/sound_1.jpeg';
+import sound2 from '../assets/images/gallery/Sound-Stage/sound_2.jpeg';
+import sound3 from '../assets/images/gallery/Sound-Stage/sound_3.jpeg';
+import sound4 from '../assets/images/gallery/Sound-Stage/sound_4.jpeg';
+import sound5 from '../assets/images/gallery/Sound-Stage/sound_5.jpeg';
+import sound6 from '../assets/images/gallery/Sound-Stage/sound_6.jpeg';
 
 /* ── FALLBACK DATA  (Exactly 6 local images for every gallery category) ── */
 const FALLBACK_ITEMS = [
