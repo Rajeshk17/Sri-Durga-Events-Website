@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Toast from '../components/Toast';
+import emailjs from '@emailjs/browser';
 
 const textAnims = {
   h1: {
@@ -110,21 +111,33 @@ const Contact = () => {
     setLoading(true);
 
     try {
-      const response = await fetch(`${apiUrl}/contacts`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(formData)
-      });
+      await emailjs.send(
+  "service_l5tse6d",
+  "template_lv76ooh",
+  {
+    from_name: formData.name,
+    from_email: formData.email,
+    phone: formData.phone,
+    message: formData.message,
+    to_email: "sridurgaevents@gmail.com"
+  },
+ "GW9IIyKo4jrxL7tDp"
+);
 
-      const data = await response.json();
+handleShowToast(
+  "✅ Thank you! Your enquiry has been sent successfully. We'll contact you within 12 hours.",
+  "success"
+);
 
-      if (!response.ok) {
-        throw new Error(data.error || 'Failed to send message.');
-      }
+setFormData({
+  name: "",
+  email: "",
+  phone: "",
+  message: ""
+});
 
-      handleShowToast(data.message || 'Message submitted successfully!', 'success');
+return;
+
       setFormData({ name: '', email: '', phone: '', message: '' });
 
     } catch (err) {
