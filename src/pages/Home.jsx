@@ -20,6 +20,11 @@ import babyShowerServiceImg from '../assets/images/services/baby-shower.jpeg';
 import corporateServiceImg from '../assets/images/services/corporate.jpeg';
 import cateringServiceImg from '../assets/images/services/Catering.jpg';
 import djServiceImg from '../assets/images/services/dj.jpeg';
+import SplitText from '../components/SplitText';
+import ScrollReveal from '../components/ScrollReveal';
+import Masonry from '../components/Masonry';
+import SplashCursor from '../components/SplashCursor';
+import ChromaGrid from '../components/ChromaGrid';
 
 const SERVICE_IMAGE_MAPPING = {
   'Wedding Events': weddingServiceImg,
@@ -128,23 +133,32 @@ const Home = () => {
     return () => clearInterval(interval);
   }, [currentBgIdx]);
 
-  const featuredServices = [
-    {
-      title: 'Wedding Events',
-      description: 'Bespoke luxury wedding planning, stage designs, and complete coordination for your magical day.',
-      image: SERVICE_IMAGE_MAPPING['Wedding Events']
-    },
-    {
-      title: 'Birthday Events',
-      description: 'Premium birthday event planning for kids and adults, featuring custom themes, elegant balloon and floral decoration, cake setups, entertainment, and complete event management.',
-      image: SERVICE_IMAGE_MAPPING['Birthday Parties']
-    },
-    {
-      title: 'DJ & Sound Systems',
-      description: 'State-of-the-art acoustics, custom soundtracks, moving beam lasers, and professional disc jockey setups.',
-      image: SERVICE_IMAGE_MAPPING['DJ & Sound Systems']
-    }
-  ];
+    const serviceCards = [
+      {
+        title: 'Wedding Decorations',
+        subtitle: 'Luxury Wedding Decorations',
+        image: weddingServiceImg,
+        borderColor: '#D4AF37',
+        gradient: 'linear-gradient(145deg, #D4AF37, #1A1A1A)',
+        url: '/services'
+      },
+      {
+        title: 'Birthday Celebrations',
+        subtitle: 'Memorable Birthday Events',
+        image: birthdayFeatured,
+        borderColor: '#8B5CF6',
+        gradient: 'linear-gradient(145deg, #8B5CF6, #1A1A1A)',
+        url: '/services'
+      },
+      {
+        title: 'Corporate Events',
+        subtitle: 'Professional Event Management',
+        image: corporateServiceImg,
+        borderColor: '#2563EB',
+        gradient: 'linear-gradient(145deg, #2563EB, #1A1A1A)',
+        url: '/services'
+      }
+    ];
 
   const testimonials = [
     {
@@ -221,14 +235,16 @@ const Home = () => {
   const [frontIdx, setFrontIdx] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(false);
 
   useEffect(() => {
-    const checkMobile = () => {
+    const checkViewport = () => {
       setIsMobile(window.innerWidth <= 575);
+      setIsDesktop(window.innerWidth >= 992);
     };
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+    checkViewport();
+    window.addEventListener('resize', checkViewport);
+    return () => window.removeEventListener('resize', checkViewport);
   }, []);
 
   // Scroll Parallax Hooks for the Stacked Cards
@@ -272,6 +288,22 @@ const Home = () => {
         {/* Animated Dark Overlay with Soft Luxury Glow */}
         <div className="hero-overlay-animated"></div>
 
+        {isDesktop && (
+          <SplashCursor
+            position="absolute"
+            zIndex={3}
+            TRANSPARENT={true}
+            SHADING={true}
+            RAINBOW_MODE={false}
+            COLOR="#D4AF37"
+            SIM_RESOLUTION={128}
+            DYE_RESOLUTION={1024}
+            SPLAT_RADIUS={0.15}
+            SPLAT_FORCE={5000}
+            COLOR_UPDATE_SPEED={8}
+          />
+        )}
+
         <div className="container hero-content-wrapper">
           <div className="row">
             <div className="col-lg-8 text-start">
@@ -285,16 +317,15 @@ const Home = () => {
                 >
                   Exquisite Event Planners
                 </motion.span>
-                <motion.h1 
-                  variants={textAnims.h1}
-                  initial="hidden"
-                  animate="visible"
+                 <h1 
                   className="display-3 text-white fw-bold mb-3 shimmer-gold-text" 
                   style={{ lineHeight: 1.15 }}
                 >
-                  Make Every Event <br />
-                  <span className="text-gold">Unforgettable</span>
-                </motion.h1>
+                  <SplitText text="Make Every Event" delay={0.25} /> <br />
+                  <span className="text-gold">
+                    <SplitText text="Unforgettable" delay={0.8} />
+                  </span>
+                </h1>
               </div>
               <div className="hero-anim-desc">
                 <motion.p 
@@ -352,112 +383,15 @@ const Home = () => {
             <div className="gold-divider"></div>
           </div>
 
-          <div className="row g-4 align-items-stretch">
-            {featuredServices.map((service, index) => {
-              const paragraphWords = service.description.split(" ");
-              return (
-                <div key={index} className="col-md-4 d-flex">
-                  <motion.div 
-                    custom={index}
-                    initial="hidden"
-                    whileInView="visible"
-                    whileHover="hover"
-                    viewport={{ once: true, amount: 0.15 }}
-                    variants={{
-                      hidden: { 
-                        opacity: 0, 
-                        y: 40, 
-                        scale: 0.96,
-                        borderColor: "rgba(212, 175, 55, 0.15)",
-                        boxShadow: "0 10px 30px rgba(0, 0, 0, 0.4)"
-                      },
-                      visible: (i) => ({
-                        opacity: 1,
-                        y: 0,
-                        scale: 1,
-                        borderColor: "rgba(212, 175, 55, 0.15)",
-                        boxShadow: "0 10px 30px rgba(0, 0, 0, 0.4)",
-                        transition: {
-                          duration: 0.8,
-                          ease: [0.16, 1, 0.3, 1],
-                          delay: i * 0.15
-                        }
-                      }),
-                      hover: {
-                        y: -12,
-                        borderColor: "rgba(212, 175, 55, 0.8)",
-                        boxShadow: "0 20px 40px rgba(212, 175, 55, 0.22), 0 0 15px rgba(212, 175, 55, 0.1)",
-                        transition: { duration: 0.4, ease: "easeInOut" }
-                      }
-                    }}
-                    style={{
-                      borderRadius: '16px',
-                      borderWidth: '1px',
-                      borderStyle: 'solid',
-                      overflow: 'hidden',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      width: '100%',
-                      background: 'var(--luxury-navy-light)'
-                    }}
-                    className="card luxury-card featured-service-card"
-                  >
-                    {/* Image */}
-                    <div className="luxury-card-img-wrapper" style={{ height: '280px', overflow: 'hidden', position: 'relative' }}>
-                      <motion.img 
-                        variants={{
-                          hidden: { scale: 1 },
-                          visible: { scale: 1 },
-                          hover: { scale: 1.05 }
-                        }}
-                        transition={{ duration: 0.5, ease: "easeInOut" }}
-                        src={service.image} 
-                        alt={service.title} 
-                        className="card-img-top w-100 h-100 object-fit-cover luxury-card-img" 
-                        loading="lazy" 
-                      />
-                    </div>
-
-                    {/* Content */}
-                    <div className="card-body p-4 text-center d-flex flex-column justify-content-center align-items-center flex-grow-1">
-                      <motion.h3 
-                        variants={{
-                          hidden: { opacity: 0, y: 15 },
-                          visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] } }
-                        }}
-                        className="text-gold mb-3"
-                        style={{ fontFamily: "'Playfair Display', serif", fontWeight: 600, fontSize: '1.35rem' }}
-                      >
-                        {service.title}
-                      </motion.h3>
-                      
-                      <motion.p 
-                        variants={{
-                          hidden: {},
-                          visible: { transition: { staggerChildren: 0.03 } }
-                        }}
-                        className="text-white mb-0" 
-                        style={{ fontSize: '0.9rem', lineHeight: '1.65', opacity: 0.85 }}
-                      >
-                        {paragraphWords.map((word, wordIdx) => (
-                          <motion.span
-                            key={wordIdx}
-                            variants={{
-                              hidden: { opacity: 0, y: 5 },
-                              visible: { opacity: 1, y: 0, transition: { duration: 0.4 } }
-                            }}
-                            style={{ display: 'inline-block', marginRight: '4px' }}
-                          >
-                            {word}
-                          </motion.span>
-                        ))}
-                      </motion.p>
-                    </div>
-                  </motion.div>
-                </div>
-              );
-            })}
-          </div>
+          <ChromaGrid
+            items={serviceCards}
+            columns={3}
+            rows={1}
+            radius={250}
+            damping={0.4}
+            fadeOut={0.5}
+            ease="power3.out"
+          />
         </div>
       </section>
 
@@ -684,51 +618,70 @@ const Home = () => {
                 {[
                   {
                     title: 'Bespoke Concept Designs',
-                    desc: "We don't repeat layouts. Every event receives an exclusive design concept customized exactly to your vision."
+                    desc: "We don't repeat layouts. Every event receives an exclusive design concept customized exactly to your vision.",
+                    icon: 'bi-palette-fill'
                   },
                   {
                     title: 'Meticulous Implementation',
-                    desc: 'Timelines, lighting transitions, vendor communications—we micromanage details so you can enjoy your event.'
+                    desc: 'Timelines, lighting transitions, vendor communications—we micromanage details so you can enjoy your event.',
+                    icon: 'bi-calendar-check-fill'
                   },
                   {
                     title: 'Elite Coordination Networks',
-                    desc: 'We source only five-star caterers, high-end production crews, and premier entertainers across the industry.'
+                    desc: 'We source only five-star caterers, high-end production crews, and premier entertainers across the industry.',
+                    icon: 'bi-people-fill'
                   }
                 ].map((item, idx) => (
                   <motion.div 
                     key={idx} 
-                    className="stat-box"
+                    className="feature-luxury-card p-4"
                     variants={{
-                      hidden: { opacity: 0, x: 45 },
+                      hidden: { opacity: 0, y: 35 },
                       visible: { 
                         opacity: 1, 
-                        x: 0, 
+                        y: 0, 
                         transition: { 
                           duration: 0.8, 
-                          ease: "easeOut",
-                          staggerChildren: 0.2
+                          ease: [0.16, 1, 0.3, 1]
                         } 
                       }
                     }}
-                    style={{ background: 'transparent', border: 'none', padding: 0 }}
+                    whileHover={{ y: -6, borderColor: 'rgba(212, 175, 55, 0.8)', boxShadow: '0 10px 30px rgba(212, 175, 55, 0.12)' }}
+                    style={{ 
+                      background: 'rgba(28, 37, 65, 0.25)', 
+                      border: '1px solid rgba(212, 175, 55, 0.15)', 
+                      borderRadius: '16px',
+                      transition: 'border-color 0.3s ease, box-shadow 0.3s ease'
+                    }}
                   >
-                    <motion.h4 
-                      variants={textAnims.h3}
-                      className="text-gold" 
-                      style={{ fontFamily: "'Playfair Display', serif", fontWeight: 600 }}
-                    >
-                      {item.title}
-                    </motion.h4>
-                    <motion.p 
-                      className="mb-0 text-white" 
-                      variants={textAnims.p}
-                      style={{ 
-                        fontSize: '0.9rem',
-                        lineHeight: '1.7'
-                      }}
-                    >
-                      {item.desc}
-                    </motion.p>
+                    <div className="d-flex align-items-start gap-3">
+                      <motion.div 
+                        className="feature-icon-wrapper text-gold d-flex align-items-center justify-content-center"
+                        style={{ fontSize: '1.5rem', width: '45px', height: '45px', borderRadius: '50%', background: 'rgba(212, 175, 55, 0.1)', flexShrink: 0 }}
+                        whileHover={{ scale: 1.25, rotate: 8 }}
+                        transition={{ type: "spring", stiffness: 300, damping: 10 }}
+                      >
+                        <i className={`bi ${item.icon}`}></i>
+                      </motion.div>
+                      <div>
+                        <h4 
+                          className="text-gold mb-2" 
+                          style={{ fontFamily: "'Playfair Display', serif", fontWeight: 600, fontSize: '1.2rem' }}
+                        >
+                          {item.title}
+                        </h4>
+                        <p 
+                          className="mb-0 text-white" 
+                          style={{ 
+                            fontSize: '0.88rem',
+                            lineHeight: '1.75',
+                            opacity: 0.9
+                          }}
+                        >
+                          {item.desc}
+                        </p>
+                      </div>
+                    </div>
                   </motion.div>
                 ))}
               </div>
@@ -786,16 +739,18 @@ const Home = () => {
                       <div className="quote-icon mb-4">
                         <i className="bi bi-quote text-gold fs-1 opacity-50"></i>
                       </div>
-                      <motion.p 
-                        variants={textAnims.p}
-                        initial="hidden"
-                        whileInView="visible"
-                        viewport={{ once: true }}
-                        className="card-text text-white mb-4 fs-5 italic" 
+                      <ScrollReveal
+                        baseOpacity={0.15}
+                        enableBlur={true}
+                        baseRotation={0}
+                        blurStrength={8}
+                        containerClassName="mb-4"
+                        textClassName="card-text text-white fs-5 italic"
                         style={{ fontStyle: 'italic', lineHeight: '1.7' }}
+                        wordAnimationEnd="bottom+=10% bottom"
                       >
-                        "{t.feedback}"
-                      </motion.p>
+                        {t.feedback}
+                      </ScrollReveal>
                       <div className="mt-4">
                         <motion.h4 
                           variants={textAnims.h3}
@@ -853,26 +808,17 @@ const Home = () => {
             <div className="gold-divider"></div>
           </div>
 
-          <div className="gallery-highlights-grid">
-            {redesignedGallery.map((item, idx) => (
-              <div 
-                key={idx} 
-                className={`gallery-highlight-card ${galleryReveal.visible ? 'visible' : ''}`}
-                style={{
-                  transitionDelay: galleryReveal.visible ? `${idx * 150}ms` : '0ms'
-                }}
-              >
-                <img src={item.image} alt={item.title} loading="lazy" />
-                <div className="gallery-highlight-overlay">
-                  <h5 className="gallery-highlight-title">{item.title}</h5>
-                  <p className="gallery-highlight-desc">{item.description}</p>
-                  <div className="gallery-highlight-arrow">
-                    <i className="bi bi-arrow-right-circle"></i>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+          <Masonry
+            items={redesignedGallery}
+            animateFrom="bottom"
+            duration={2.2}
+            ease="expo.out"
+            stagger={0.18}
+            scaleOnHover={true}
+            hoverScale={0.97}
+            blurToFocus={true}
+            colorShiftOnHover={false}
+          />
 
           <div className="text-center mt-5">
             <motion.div whileHover={{ scale: 1.05 }} style={{ display: 'inline-block' }}>
@@ -885,26 +831,31 @@ const Home = () => {
       {/* Contact CTA Section */}
       <section className="py-5 text-center bg-luxury-navy position-relative border-top border-gold" style={{ borderColor: 'rgba(212, 175, 55, 0.15) !important' }}>
         <div className="container py-5">
-          <motion.h2 
-            variants={textAnims.h2}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="display-4 text-gold mb-3"
-          >
-            Plan Your Masterpiece
-          </motion.h2>
+          <h2 className="display-4 text-gold mb-3">
+            <SplitText
+              text="Plan Your Masterpiece"
+              delay={0.04}
+              stagger={0.04}
+              duration={1}
+            />
+          </h2>
           <motion.p 
-            variants={textAnims.p}
-            initial="hidden"
-            whileInView="visible"
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 0.95, y: 0 }}
             viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.25 }}
             className="text-white mx-auto mb-5" 
-            style={{ maxWidth: '600px', fontSize: '1.05rem', opacity: 0.95 }}
+            style={{ maxWidth: '600px', fontSize: '1.05rem' }}
           >
             Ready to design an elite celebration? Contact our planning consultants and receive a pre-event blueprint draft.
           </motion.p>
-          <div className="d-flex justify-content-center gap-3">
+          <motion.div 
+            className="d-flex justify-content-center gap-3"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.45 }}
+          >
             <motion.a 
               whileHover={{ scale: 1.05 }}
               href="https://wa.me/917358951381?text=Hello%20Sri%20Durga%20Events!%20I%20am%20interested%20in%20booking%20an%20event.%20Please%20share%20the%20details%20and%20pricing." 
@@ -917,7 +868,7 @@ const Home = () => {
             <motion.div whileHover={{ scale: 1.05 }}>
               <Link to="/contact" className="btn btn-gold px-4 py-3">Send Message</Link>
             </motion.div>
-          </div>
+          </motion.div>
         </div>
       </section>
     </div>

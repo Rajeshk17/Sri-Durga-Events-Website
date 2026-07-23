@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import LoadingSpinner from '../components/LoadingSpinner';
+import SplitText from '../components/SplitText';
+import FadeContent from '../components/FadeContent';
 
 const FALLBACK_PACKAGES = [
   {
@@ -180,7 +182,7 @@ const Particles = () => {
   );
 };
 
-/* ── INDIVIDUAL PACKAGE CARD WITH FRAMER MOTION ── */
+/* ── INDIVIDUAL PACKAGE CARD WITH STAGGER ENTRY & HOVER ── */
 const PackageCard = ({ pkg, idx, activeCardId, setActiveCardId, isMobile }) => {
   const [isHovered, setIsHovered] = useState(false);
   const isExpanded = isMobile ? activeCardId === pkg.id : isHovered;
@@ -193,52 +195,42 @@ const PackageCard = ({ pkg, idx, activeCardId, setActiveCardId, isMobile }) => {
 
   const isPremium = idx === 2;
 
-  const getLoadVariant = () => {
-    if (idx === 0) {
-      return {
-        hidden: { opacity: 0, x: -100 },
-        visible: { opacity: 1, x: 0, transition: { duration: 0.8, ease: "easeInOut" } }
-      };
-    }
-    if (idx === 1) {
-      return {
-        hidden: { opacity: 0, y: 100 },
-        visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeInOut" } }
-      };
-    }
-    return {
-      hidden: { opacity: 0, x: 100 },
-      visible: { opacity: 1, x: 0, transition: { duration: 0.8, ease: "easeInOut" } }
-    };
-  };
-
-  const loadVariants = getLoadVariant();
-
+  // Stagger variants for the features list
   const listVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
         staggerChildren: 0.05,
-        delayChildren: 0.3
+        delayChildren: 0.25
       }
     }
   };
 
+  // Fade Up feature items
   const itemVariants = {
-    hidden: { opacity: 0, x: -15 },
+    hidden: { opacity: 0, y: 15 },
     visible: {
-      opacity: 0.85,
-      x: 0,
-      transition: { duration: 0.4, ease: "easeOut" }
+      opacity: 0.9,
+      y: 0,
+      transition: { duration: 0.4, ease: [0.16, 1, 0.3, 1] }
+    }
+  };
+
+  // Staggered load animation configuration (Initial: opacity: 0, y: 60, scale: 0.95)
+  const cardLoadVariants = {
+    hidden: { opacity: 0, y: 60, scale: 0.95 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] }
     }
   };
 
   return (
     <motion.div
-      initial="hidden"
-      animate="visible"
-      variants={loadVariants}
+      variants={cardLoadVariants}
       className="col-lg-4 col-md-6 d-flex align-items-stretch"
     >
       <motion.div
@@ -325,16 +317,27 @@ const PackageCard = ({ pkg, idx, activeCardId, setActiveCardId, isMobile }) => {
                 variants={itemVariants}
                 className="d-flex align-items-start gap-2"
               >
-                <i className="bi bi-check2 text-gold mt-1"></i>
+                {/* Pop check icon on entrance */}
+                <motion.i 
+                  className="bi bi-check2 text-gold mt-1"
+                  initial={{ scale: 0.6, opacity: 0 }}
+                  whileInView={{ scale: 1, opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ type: "spring", stiffness: 300, damping: 10, delay: index * 0.05 }}
+                />
                 <span style={{ color: '#FFFFFF' }}>{feature}</span>
               </motion.li>
             ))}
           </motion.ul>
 
-          {/* INQUIRE PACKAGE Button */}
-          <div className="mt-auto pt-2">
+          {/* INQUIRE PACKAGE Button with Hover Glow & Slight Scale */}
+          <div className="pt-2">
             <motion.a 
-              whileHover={{ scale: 1.04 }}
+              whileHover={{ 
+                scale: 1.04,
+                boxShadow: "0 0 15px rgba(212, 175, 55, 0.6)",
+                borderColor: "var(--luxury-gold)"
+              }}
               href={`https://wa.me/917358951381?text=Hello%20Sri%20Durga%20Events,%20I%20would%20like%20to%20inquire%20about%20the%20${encodeURIComponent(pkg.name)}.%20Please%20share%20the%20details.`} 
               target="_blank" 
               rel="noopener noreferrer"
@@ -348,7 +351,8 @@ const PackageCard = ({ pkg, idx, activeCardId, setActiveCardId, isMobile }) => {
                 letterSpacing: '1.5px',
                 textTransform: 'uppercase',
                 display: 'inline-block',
-                textDecoration: 'none'
+                textDecoration: 'none',
+                transition: 'border-color 0.3s ease'
               }}
             >
               Inquire Package
@@ -385,81 +389,144 @@ const Packages = () => {
     <div className="animate-fade-in position-relative">
       <Particles />
 
-      {/* Header */}
+      {/* Header - SplitText Word Animation */}
       <header className="page-header position-relative" style={{ zIndex: 1 }}>
         <div className="container">
           <motion.span 
-            variants={textAnims.label}
-            initial="hidden"
-            animate="visible"
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.35, ease: "easeOut" }}
             className="text-gold text-uppercase fw-bold d-block" 
             style={{ fontSize: '0.8rem', letterSpacing: '2px' }}
           >
             Investment Plans
           </motion.span>
-          <motion.h1 
-            variants={textAnims.h1}
-            initial="hidden"
-            animate="visible"
-            className="display-4 text-gold mt-2"
-          >
-            <span className="shimmer-title shimmer-gold-text">Curated Packages</span>
-          </motion.h1>
+          <h1 className="display-4 text-gold mt-2">
+            <SplitText
+              text="Curated Packages"
+              by="words"
+              delay={0.2}
+              stagger={0.15}
+              duration={1}
+            />
+          </h1>
           <div className="gold-divider"></div>
         </div>
       </header>
 
-      {/* Pricing Cards */}
+      {/* Pricing Cards - Staggered viewport entrance */}
       <section className="py-5 bg-luxury-navy position-relative" style={{ zIndex: 1 }}>
         <div className="container py-4">
-          {loading ? (
-            <LoadingSpinner text="Retrieving Curated Pricing..." />
-          ) : (
-            <div className="row g-4 justify-content-center align-items-stretch">
-              {packages.map((pkg, idx) => (
-                <PackageCard
-                  key={pkg.id}
-                  pkg={pkg}
-                  idx={idx}
-                  activeCardId={activeCardId}
-                  setActiveCardId={setActiveCardId}
-                  isMobile={isMobile}
-                />
-              ))}
-            </div>
-          )}
+          <FadeContent threshold={0.15} duration={0.6}>
+            {loading ? (
+              <LoadingSpinner text="Retrieving Curated Pricing..." />
+            ) : (
+              <motion.div 
+                className="row g-4 justify-content-center align-items-stretch"
+                variants={{
+                  hidden: {},
+                  visible: {
+                    transition: {
+                      staggerChildren: 0.15
+                    }
+                  }
+                }}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.15 }}
+              >
+                {packages.map((pkg, idx) => (
+                  <PackageCard
+                    key={pkg.id}
+                    pkg={pkg}
+                    idx={idx}
+                    activeCardId={activeCardId}
+                    setActiveCardId={setActiveCardId}
+                    isMobile={isMobile}
+                  />
+                ))}
+              </motion.div>
+            )}
+          </FadeContent>
         </div>
       </section>
 
-      {/* Package Disclaimer */}
+      {/* Second CTA ("Need a Tailor-made Blueprint?") with gold sweep buttons & floating particles */}
       <section 
-        className="py-5 bg-luxury-navy-light text-center border-top border-gold position-relative" 
+        className="py-5 bg-luxury-navy-light text-center border-top border-gold position-relative overflow-hidden" 
         style={{ borderColor: 'rgba(212, 175, 55, 0.15) !important', zIndex: 1 }}
       >
-        <div className="container py-4">
-          <motion.h4 
-            variants={textAnims.h3}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="text-gold mb-3" 
-            style={{ fontFamily: "'Playfair Display', serif" }}
-          >
-            Need a Tailor-made Blueprint?
-          </motion.h4>
-          <motion.p 
-            variants={textAnims.p}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="text-white mx-auto mb-4" 
-            style={{ maxWidth: '600px', fontSize: '0.9rem' }}
-          >
-            All standard event sizes can be extended. Contact our sales department to include custom setups, floral modifications, and guest list count extensions.
-          </motion.p>
-          <motion.div whileHover={{ scale: 1.05 }} style={{ display: 'inline-block' }}>
-            <Link to="/contact" className="btn btn-luxury-outline packages-btn">Contact Planners</Link>
-          </motion.div>
+        {/* Subtle background gold particles */}
+        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, overflow: 'hidden', pointerEvents: 'none', zIndex: 0 }}>
+          {Array.from({ length: 6 }).map((_, i) => (
+            <motion.div
+              key={i}
+              className="rounded-circle"
+              style={{
+                position: 'absolute',
+                width: Math.random() * 4 + 2 + 'px',
+                height: Math.random() * 4 + 2 + 'px',
+                backgroundColor: '#D4AF37',
+                opacity: Math.random() * 0.12 + 0.04,
+                left: Math.random() * 100 + '%',
+                top: Math.random() * 100 + '%'
+              }}
+              animate={{
+                y: [0, -30 - Math.random() * 30, 0],
+                x: [0, Math.random() * 30 - 15, 0],
+                opacity: [0.04, 0.22, 0.04]
+              }}
+              transition={{
+                duration: 5 + Math.random() * 5,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+            />
+          ))}
+        </div>
+
+        <div className="container py-4 position-relative" style={{ zIndex: 2 }}>
+          <FadeContent threshold={0.15} duration={0.6}>
+            <h4 
+              className="text-gold mb-3" 
+              style={{ fontFamily: "'Playfair Display', serif" }}
+            >
+              <SplitText
+                text="Need a Tailor-made Blueprint?"
+                delay={0.1}
+                stagger={0.05}
+                duration={0.8}
+              />
+            </h4>
+            <motion.p 
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 0.95, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.25 }}
+              className="text-white mx-auto mb-4" 
+              style={{ maxWidth: '600px', fontSize: '0.9rem' }}
+            >
+              All standard event sizes can be extended. Contact our sales department to include custom setups, floral modifications, and guest list count extensions.
+            </motion.p>
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.45 }}
+              whileHover={{ scale: 1.05 }}
+              style={{ display: 'inline-block' }}
+            >
+              <Link 
+                to="/contact" 
+                className="btn btn-luxury-outline packages-btn shine-button-luxury"
+                style={{ 
+                  filter: 'drop-shadow(0 0 8px rgba(212, 175, 55, 0.45))'
+                }}
+              >
+                Contact Planners
+              </Link>
+            </motion.div>
+          </FadeContent>
         </div>
       </section>
     </div>

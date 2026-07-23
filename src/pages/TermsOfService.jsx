@@ -1,5 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
+import Silk from '../components/Silk';
+import SplitText from '../components/SplitText';
+import FadeContent from '../components/FadeContent';
 
 const textAnims = {
   h1: {
@@ -46,6 +49,17 @@ const textAnims = {
 };
 
 const TermsOfService = () => {
+  const [isMobileOrTablet, setIsMobileOrTablet] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobileOrTablet(window.innerWidth < 992);
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   const sections = [
     {
       icon: 'bi-calendar2-check-fill',
@@ -134,29 +148,41 @@ const TermsOfService = () => {
       <header className="page-header">
         <div className="container">
           <motion.span 
-            variants={textAnims.label}
-            initial="hidden"
-            animate="visible"
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
             className="text-uppercase fw-bold d-block" 
-            style={{ fontSize: '0.8rem', color: '#FFFFFF' }}
+            style={{ fontSize: '0.8rem', color: '#FFFFFF', letterSpacing: '2px' }}
           >
             Legal Documents
           </motion.span>
-          <motion.h1 
-            variants={textAnims.h1}
-            initial="hidden"
-            animate="visible"
-            className="display-4 text-white mt-2 shimmer-gold-text"
-          >
-            Terms of Service
-          </motion.h1>
+          <h1 className="display-4 text-white mt-2 shimmer-gold-text">
+            <SplitText
+              text="Terms of Service"
+              delay={0.2}
+              stagger={0.03}
+              duration={0.7}
+            />
+          </h1>
           <div className="gold-divider"></div>
         </div>
       </header>
 
       {/* Content Section */}
-      <section className="py-5 bg-luxury-navy">
-        <div className="container py-4" style={{ maxWidth: '900px' }}>
+      <section className="py-5 bg-luxury-navy position-relative overflow-hidden">
+        {/* Subtle Silk Backdrop */}
+        <div className="terms-background" style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: 0, overflow: 'hidden', opacity: 0.08 }}>
+          <Silk
+            speed={2}
+            scale={1.2}
+            color="#D4AF37"
+            noiseIntensity={0.8}
+            rotation={15}
+            dpr={isMobileOrTablet ? 1 : [1, 2]}
+          />
+        </div>
+
+        <div className="container py-4 position-relative" style={{ maxWidth: '900px', zIndex: 2 }}>
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -170,81 +196,103 @@ const TermsOfService = () => {
             }}
           >
             <motion.p 
-              variants={textAnims.p}
-              initial="hidden"
-              animate="visible"
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 0.95, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.1 }}
               className="lead text-gold mb-4" 
               style={{ fontFamily: "'Playfair Display', serif", lineHeight: '1.8' }}
             >
               By booking Sri Durga Events, you agree to the following terms and conditions.
             </motion.p>
 
-            <motion.div
-              variants={{
-                hidden: {},
-                visible: {
-                  transition: {
-                    staggerChildren: 0.12
-                  }
-                }
-              }}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              className="d-flex flex-column gap-5 mt-5"
-            >
-              {sections.map((section, idx) => (
-                <motion.div
-                  key={idx}
-                  variants={{
-                    hidden: { opacity: 0, y: 20 },
-                    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
-                  }}
-                  className="legal-section d-flex gap-4 align-items-start"
-                >
-                  <div 
-                    className="icon-wrapper d-flex align-items-center justify-content-center flex-shrink-0"
-                    style={{
-                      width: '50px',
-                      height: '50px',
-                      borderRadius: '12px',
-                      border: '1px solid rgba(212, 175, 55, 0.3)',
-                      background: 'rgba(20, 32, 67, 0.5)',
-                      boxShadow: '0 0 10px rgba(212, 175, 55, 0.1)'
-                    }}
-                  >
-                    <i className={`bi ${section.icon} text-gold fs-4`}></i>
-                  </div>
-                  <div>
-                    <motion.h3 
-                      variants={textAnims.h2}
-                      className="h5 text-gold mb-3" 
-                      style={{ fontFamily: "'Playfair Display', serif", fontWeight: 600, letterSpacing: '0.5px' }}
-                    >
-                      {section.title}
-                    </motion.h3>
-                    {section.items ? (
-                      <ul className="list-unstyled d-flex flex-column gap-2 mb-0" style={{ fontSize: '0.92rem', color: '#FFFFFF', opacity: 0.9 }}>
-                        {section.items.map((item, i) => (
-                          <li key={i} className="d-flex align-items-start gap-2">
-                            <i className="bi bi-check2 text-gold mt-1"></i>
-                            <span>{item}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    ) : (
-                      <motion.p 
-                        variants={textAnims.p}
-                        className="mb-0 text-white" 
-                        style={{ fontSize: '0.92rem', lineHeight: '1.75', opacity: 0.9 }}
+            <div className="d-flex flex-column gap-4 mt-5">
+              {sections.map((section, idx) => {
+                const isNotice = idx === 5 || idx === 7; // Cancellation and Liability sections
+                return (
+                  <div key={idx}>
+                    <FadeContent threshold={0.1} delay={isMobileOrTablet ? 0 : idx * 0.06}>
+                      <motion.div
+                        whileHover={{ 
+                          y: -4, 
+                          borderColor: isNotice ? 'rgba(239, 68, 68, 0.5)' : 'rgba(212, 175, 55, 0.5)', 
+                          boxShadow: isNotice ? '0 10px 25px rgba(239, 68, 68, 0.15)' : '0 10px 25px rgba(0,0,0,0.3)' 
+                        }}
+                        className="legal-section d-flex gap-4 align-items-start p-4"
+                        style={{
+                          background: 'rgba(11, 19, 43, 0.25)',
+                          border: isNotice ? '1px solid rgba(239, 68, 68, 0.25)' : '1px solid rgba(212, 175, 55, 0.15)',
+                          borderRadius: '16px',
+                          transition: 'border-color 0.3s ease, box-shadow 0.3s ease'
+                        }}
                       >
-                        {section.content}
-                      </motion.p>
+                        <motion.div 
+                          className="icon-wrapper d-flex align-items-center justify-content-center flex-shrink-0"
+                          whileHover={{ rotate: 15, scale: 1.1 }}
+                          transition={{ type: "spring", stiffness: 300, damping: 10 }}
+                          style={{
+                            width: '50px',
+                            height: '50px',
+                            borderRadius: '12px',
+                            border: isNotice ? '1px solid rgba(239, 68, 68, 0.4)' : '1px solid rgba(212, 175, 55, 0.3)',
+                            background: isNotice ? 'rgba(239, 68, 68, 0.1)' : 'rgba(20, 32, 67, 0.5)',
+                            boxShadow: isNotice ? '0 0 10px rgba(239, 68, 68, 0.1)' : '0 0 10px rgba(212, 175, 55, 0.1)'
+                          }}
+                        >
+                          <i className={`bi ${section.icon} ${isNotice ? 'text-danger' : 'text-gold'} fs-4`}></i>
+                        </motion.div>
+                        <div>
+                          <h3 
+                            className={`h5 mb-3 ${isNotice ? 'text-danger' : 'text-gold'}`} 
+                            style={{ fontFamily: "'Playfair Display', serif", fontWeight: 600, letterSpacing: '0.5px' }}
+                          >
+                            {section.title}
+                          </h3>
+                          {section.items ? (
+                            <ul className="list-unstyled d-flex flex-column gap-2 mb-0" style={{ fontSize: '0.92rem', color: '#FFFFFF', opacity: 0.9 }}>
+                              {section.items.map((item, i) => (
+                                <motion.li 
+                                  key={i} 
+                                  className="d-flex align-items-start gap-2"
+                                  initial={{ opacity: 0, y: 5 }}
+                                  whileInView={{ opacity: 1, y: 0 }}
+                                  viewport={{ once: true }}
+                                  transition={{ duration: 0.4, delay: i * 0.05 }}
+                                >
+                                  <i className={`bi bi-check2 ${isNotice ? 'text-danger' : 'text-gold'} mt-1`}></i>
+                                  <span>{item}</span>
+                                </motion.li>
+                              ))}
+                            </ul>
+                          ) : (
+                            <motion.p 
+                              className="mb-0 text-white" 
+                              initial={{ opacity: 0, y: 8 }}
+                              whileInView={{ opacity: 0.9, y: 0 }}
+                              viewport={{ once: true }}
+                              transition={{ duration: 0.6 }}
+                              style={{ fontSize: '0.92rem', lineHeight: '1.75' }}
+                            >
+                              {section.content}
+                            </motion.p>
+                          )}
+                        </div>
+                      </motion.div>
+                    </FadeContent>
+
+                    {/* Animated Gold Divider between sections */}
+                    {idx < sections.length - 1 && (
+                      <div style={{ position: 'relative', width: '100%', height: '1px', background: 'linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.2), transparent)', margin: '1.5rem 0', overflow: 'hidden' }}>
+                        <motion.div
+                          style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent)' }}
+                          animate={{ x: ['-100%', '100%'] }}
+                          transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
+                        />
+                      </div>
                     )}
                   </div>
-                </motion.div>
-              ))}
-            </motion.div>
+                );
+              })}
+            </div>
 
             <hr className="bg-gold my-5" style={{ opacity: 0.15, height: '1px', border: 'none' }} />
 

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import LoadingSpinner from '../components/LoadingSpinner';
+import Masonry from '../components/Masonry';
 
 // Weddings
 import wedding1 from '../assets/images/gallery/Weddings/wedding_1.jpeg';
@@ -309,36 +310,7 @@ const textAnims = {
   }
 };
 
-/* ── SINGLE GALLERY CARD ── */
-const GalleryCard = ({ item, idx, onOpen }) => {
-  const displayCategory = item.category === 'music' ? 'Sound & Stage' : item.category;
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.6, delay: (idx % 6) * 0.08, ease: "easeOut" }}
-      className="col-lg-4 col-md-6 gallery-card-wrapper"
-    >
-      <div className="gallery-item-premium" onClick={() => onOpen(idx)}>
-        <img
-          src={item.image}
-          alt={item.title}
-          loading="lazy"
-          onError={(e) => {
-            e.target.src = wedding1;
-          }}
-        />
-        <div className="gallery-overlay-premium">
-          <span className="gallery-badge">{displayCategory.toUpperCase()}</span>
-          <h5 className="gallery-overlay-title">{item.title}</h5>
-          <p className="gallery-overlay-desc">{item.description}</p>
-          <i className="bi bi-zoom-in text-white fs-4 mt-2"></i>
-        </div>
-      </div>
-    </motion.div>
-  );
-};
+
 
 /* ── MAIN GALLERY PAGE ── */
 const Gallery = () => {
@@ -493,11 +465,18 @@ const Gallery = () => {
           ) : filteredItems.length === 0 ? (
             <p className="text-center text-white py-5">No photos found in this category.</p>
           ) : (
-            <div className="row g-4">
-              {filteredItems.map((item, idx) => (
-                <GalleryCard key={item.id} item={item} idx={idx} onOpen={openLightbox} />
-              ))}
-            </div>
+            <Masonry
+              items={filteredItems}
+              animateFrom="bottom"
+              duration={2.2}
+              ease="expo.out"
+              stagger={0.18}
+              scaleOnHover={true}
+              hoverScale={0.97}
+              blurToFocus={true}
+              colorShiftOnHover={false}
+              onItemClick={openLightbox}
+            />
           )}
 
         </div>

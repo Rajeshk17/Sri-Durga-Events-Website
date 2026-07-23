@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import SplitText from '../components/SplitText';
+import FadeContent from '../components/FadeContent';
 
 // Separate imports of each service image
 import weddingImg from '../assets/images/services/wedding.jpeg';
@@ -377,31 +379,78 @@ const Services = () => {
       </section>
 
       {/* CTA */}
-      <section className="py-5 bg-luxury-navy-light text-center border-top border-gold" style={{ borderColor: 'rgba(212, 175, 55, 0.15) !important' }}>
-        <div className="container py-4">
-          <motion.h3 
-            variants={textAnims.h3}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="text-gold mb-3" 
-            style={{ fontFamily: "'Playfair Display', serif" }}
-          >
-            Looking for a custom event package?
-          </motion.h3>
-          <motion.p 
-            variants={textAnims.p}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="text-white mx-auto mb-4" 
-            style={{ maxWidth: '600px', fontSize: '0.9rem' }}
-          >
-            Get in touch with our event design director for tailored setups, custom lighting blueprints, and multi-cuisine buffet menus.
-          </motion.p>
-          <motion.div whileHover={{ scale: 1.05 }} style={{ display: 'inline-block' }}>
-            <a href="https://wa.me/917358951381?text=Hello%20Sri%20Durga%20Events,%20I%20would%20like%20to%20customize%20a%20package%20for%20an%20event.%20Please%20share%20the%20details." target="_blank" rel="noopener noreferrer" className="btn btn-luxury-outline">Customize Event</a>
-          </motion.div>
+      <section className="py-5 bg-luxury-navy-light text-center border-top border-gold position-relative overflow-hidden" style={{ borderColor: 'rgba(212, 175, 55, 0.15) !important' }}>
+        {/* Floating particles in background */}
+        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, overflow: 'hidden', pointerEvents: 'none', zIndex: 0 }}>
+          {Array.from({ length: 8 }).map((_, i) => (
+            <motion.div
+              key={i}
+              className="rounded-circle"
+              style={{
+                position: 'absolute',
+                width: Math.random() * 4 + 2 + 'px',
+                height: Math.random() * 4 + 2 + 'px',
+                backgroundColor: '#D4AF37',
+                opacity: Math.random() * 0.12 + 0.04,
+                left: Math.random() * 100 + '%',
+                top: Math.random() * 100 + '%'
+              }}
+              animate={{
+                y: [0, -30 - Math.random() * 30, 0],
+                x: [0, Math.random() * 30 - 15, 0],
+                opacity: [0.04, 0.22, 0.04]
+              }}
+              transition={{
+                duration: 5 + Math.random() * 5,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+            />
+          ))}
+        </div>
+
+        <div className="container py-4 position-relative" style={{ zIndex: 2 }}>
+          <FadeContent threshold={0.15}>
+            <h3 
+              className="text-gold mb-3" 
+              style={{ fontFamily: "'Playfair Display', serif" }}
+            >
+              <SplitText
+                text="Looking for a custom event package?"
+                delay={0.1}
+                stagger={0.04}
+                duration={0.8}
+              />
+            </h3>
+            <motion.p 
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.25 }}
+              className="text-white mx-auto mb-4" 
+              style={{ maxWidth: '600px', fontSize: '0.9rem' }}
+            >
+              Get in touch with our event design director for tailored setups, custom lighting blueprints, and multi-cuisine buffet menus.
+            </motion.p>
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.45 }}
+              whileHover={{ scale: 1.05 }}
+              style={{ display: 'inline-block' }}
+            >
+              <a 
+                href="https://wa.me/917358951381?text=Hello%20Sri%20Durga%20Events,%20I%20would%20like%20to%20customize%20a%20package%20for%20an%20event.%20Please%20share%20the%20details." 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="btn btn-luxury-outline"
+                style={{ filter: 'drop-shadow(0 0 8px rgba(212, 175, 55, 0.4))' }}
+              >
+                Customize Event
+              </a>
+            </motion.div>
+          </FadeContent>
         </div>
       </section>
 
